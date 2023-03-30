@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include <string.h>
-#include "main.h"
+#include "../headers/main.h"
 #define EX3
 
 typedef struct List {
@@ -107,7 +107,7 @@ int main() {
     }
 
     // file_exists:
-    char *test = "test.txt";
+    char *test = "/TestFiles/test.txt";
     if (file_exists(test)) {
         printf("Le fichier %s existe.\n", test);
     } else {
@@ -115,8 +115,8 @@ int main() {
     }
 
     // cp
-    char *src_file = "test.txt";
-    char *dest_file = "test_copy.txt";
+    char *src_file = "/TestFiles/test.txt";
+    char *dest_file = "/TestFiles/test_copy.txt";
     cp(dest_file, src_file);
     printf("Fichier copié de %s à %s [TEST CP]\n", src_file, dest_file);
 
@@ -127,7 +127,7 @@ int main() {
     free(hash_path);
 
     // blobFile
-    char *file_to_blob = "test.txt";
+    char *file_to_blob = "/TestFiles/test.txt";
     blobFile(file_to_blob);
     printf("Instantané du fichier %s créé [TEST BLOBFILE]\n", file_to_blob);
 

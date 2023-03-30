@@ -1,25 +1,25 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
-all: prog ex2 ex3
+all: exe/prog exe/ex2 exe/ex3
 
-Exercice2.o: Exercice2.c
-	$(CC) $(CFLAGS) -c $<
+obj/Exercice2.o: src/Exercice2.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-ex2: Exercice2.o
+exe/ex2: obj/Exercice2.o
 	$(CC) $(CFLAGS) -o $@ $^
 
-Exercice3.o: Exercice3.c
-	$(CC) $(CFLAGS) -c $<
+obj/Exercice3.o: src/Exercice3.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-ex3: Exercice3.o main.o
-	$(CC) $(CFLAGS)  -o $@ Exercice3.o
-
-prog: main.o
+exe/ex3: obj/Exercice3.o obj/main.o
 	$(CC) $(CFLAGS) -o $@ $^
 
-main.o: main.c
-	$(CC) $(CFLAGS) -c $<
+exe/prog: obj/main.o
+	$(CC) $(CFLAGS) -o $@ $^
+
+obj/main.o: src/main.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f *.o prog ex2 ex3
+	rm -f obj/*.o exe/prog exe/ex2 exe/ex3
