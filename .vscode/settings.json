@@ -2,5 +2,9 @@
     "C_Cpp.errorSquiggles": "disabled",
     "ocaml.sandbox": {
         "kind": "global"
+    },
+    "files.associations": {
+        "main.h": "c",
+        "string.h": "c"
     }
 }

@@ -12,6 +12,7 @@ int hashFile(char* source, char* dest){
     system(buffer);
     return 1;
 }
+
 //1.4:
 char* sha256file(char* file){   
     static char template [] = "/tmp/myfileXXXXXXX" ;
@@ -30,7 +31,7 @@ char* sha256file(char* file){
 }
 
 
-//#ifndef MAINC
+#ifndef MAINC
 int main() {
     char* source_file = "test.txt";
     char* hash_destination = "hash.txt";
@@ -54,4 +55,4 @@ int main() {
 
     return 0;
 }
-//#endif
+#endif

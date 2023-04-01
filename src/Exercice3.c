@@ -2,21 +2,24 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include <string.h>
-#include "../headers/main.h"
 #define EX3
+#include "../headers/main.h"
+#define EX3_MAIN
+
 
 typedef struct List {
     char **names;
     int size;
 } List;
 
-//J'ai du rajouter cette fonction car les indications au préprocesseur ifndef endif ne fonctionnait pas pour les main (posaient des problemes à la compilation)
+/*J'ai du rajouter cette fonction car les indications au préprocesseur ifndef endif ne fonctionnait pas pour les main (posaient des problemes à la compilation)
 int hashFile(char* source, char* dest){
     char buffer[256];
     sprintf(buffer,"cat %s|sha256sum>%s",source,dest);
     system(buffer);
     return 1;
-}
+}*
+*/
 
 List* listdir(char* root_dir) {
     DIR *dp = opendir(root_dir);
@@ -96,6 +99,7 @@ void blobFile(char* file) {
     free(hash_path);
 }
 
+#ifndef EX3_MAIN
 int main() {
     char *root_dir = ".";
 
@@ -133,3 +137,4 @@ int main() {
 
     return 0;
 }
+#endif

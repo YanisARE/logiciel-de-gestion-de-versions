@@ -2,10 +2,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#define EXERCICE3_H
-#define EX3
-
 #ifndef EXERCICE3_H
+#define EXERCICE3_H
 
 typedef struct List {
     char **names;
