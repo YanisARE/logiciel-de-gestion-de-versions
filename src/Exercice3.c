@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include <string.h>
-#define EX3
 #include "../headers/main.h"
 #define EX3_MAIN
 

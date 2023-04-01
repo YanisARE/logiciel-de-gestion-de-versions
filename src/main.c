@@ -31,7 +31,6 @@ char* sha256file(char* file){
 }
 
 
-#ifndef MAINC
 int main() {
     char* source_file = "test.txt";
     char* hash_destination = "hash.txt";
@@ -55,4 +54,3 @@ int main() {
 
     return 0;
 }
-#endif
