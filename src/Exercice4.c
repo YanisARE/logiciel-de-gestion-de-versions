@@ -3,7 +3,10 @@
 #include <unistd.h>
 #include <string.h>
 #include <dirent.h>
- 
+#include <sys/stat.h>
+#include <sys/types.h>
+
+
 typedef struct {
     char * name ;
     char * hash ;
@@ -194,4 +197,29 @@ WorkTree* ftwt(char* fichier) {
     free(chaine);
 
     return wt;
+}
+
+int main(int argc, char **argv) {
+    WorkTree *wt = initWorkTree();
+    appendWorkTree(wt, "file1.txt", "hash1", 0644);
+    appendWorkTree(wt, "file2.txt", "hash2", 0755);
+
+    char *wt_str = wtts(wt);
+    printf("WorkTree:\n%s\n", wt_str);
+
+    int ret = wttf(wt, "worktree.txt");
+    if (ret == 0) {
+        printf("WorkTree écrit dans le fichier worktree.txt\n");
+    }
+
+    WorkTree *wt_read = ftwt("worktree.txt");
+    char *wt_read_str = wtts(wt_read);
+    printf("WorkTree lu depuis le fichier:\n%s\n", wt_read_str);
+
+    free(wt_str);
+    free(wt_read_str);
+    freeWorkTree(wt);
+    freeWorkTree(wt_read);
+
+    return 0;
 }
