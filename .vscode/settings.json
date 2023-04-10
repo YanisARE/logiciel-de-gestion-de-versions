@@ -11,6 +11,7 @@
         "stdio.h": "c",
         "stdlib.h": "c",
         "exercice2.h": "c",
-        "exercice3.h": "c"
+        "exercice3.h": "c",
+        "exercice5.h": "c"
     }
 }
