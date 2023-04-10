@@ -5,6 +5,12 @@
     },
     "files.associations": {
         "main.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "stat.h": "c",
+        "exercice4.h": "c",
+        "stdio.h": "c",
+        "stdlib.h": "c",
+        "exercice2.h": "c",
+        "exercice3.h": "c"
     }
 }

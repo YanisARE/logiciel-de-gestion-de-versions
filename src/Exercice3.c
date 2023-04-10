@@ -2,48 +2,48 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include <string.h>
-#include "../headers/main.h"
+#include "../headers/Exercice3.h"
+
 #define EX3_MAIN
 
 
-typedef struct List {
-    char **names;
-    int size;
-} List;
-
-/*J'ai du rajouter cette fonction car les indications au préprocesseur ifndef endif ne fonctionnait pas pour les main (posaient des problemes à la compilation)
-int hashFile(char* source, char* dest){
-    char buffer[256];
-    sprintf(buffer,"cat %s|sha256sum>%s",source,dest);
-    system(buffer);
-    return 1;
-}*
-*/
-
-List* listdir(char* root_dir) {
-    DIR *dp = opendir(root_dir);
+List * listdir ( char * root_dir ){
+    DIR *dp;
     struct dirent *ep;
-    List *list = malloc(sizeof(List));
-    list->size = 0;
-    list->names = NULL;
-
-    if (dp != NULL) {
-        while ((ep = readdir(dp)) != NULL) {
-            list->names = realloc(list->names, (list->size + 1) * sizeof(char *));
-            list->names[list->size] = strdup(ep->d_name);
-            list->size++;
+    List * L = initList ();
+    *L = NULL ;
+    Cell * temp_cell ;
+    dp = opendir ( root_dir );
+    if (dp != NULL ){
+        while (( ep = readdir (dp)) != NULL ){
+            temp_cell = buildCell (ep -> d_name );
+            insertFirst (L, temp_cell );
+            List ptr = *L;
+            while (ptr != NULL ){
+                ptr = ptr -> next ;
+            }
         }
-        closedir(dp);
+    ( void ) closedir (dp);
     }
-    return list;
+    else{
+        perror ("Impossible d'ouvrir le repertoire");
+    return NULL ;
+    }
+
+    return L;
 }
 
-int file_exists(char *file) {
-    List *list = listdir(".");
-    for (int i = 0; i < list->size; i++) {
-        if (strcmp(list->names[i], file) == 0) {
+int file_exists(char* file) {
+    List* L = listdir(".");
+    if (L == NULL) {
+        return 0;
+    }
+    Cell* curr = *L;
+    while (curr != NULL) {
+        if (strcmp(curr->data, file) == 0) {
             return 1;
         }
+        curr = curr->next;
     }
     return 0;
 }
@@ -98,42 +98,4 @@ void blobFile(char* file) {
     free(hash_path);
 }
 
-#ifndef EX3_MAIN
-int main() {
-    char *root_dir = ".";
 
-    // listdir:
-    printf("Liste des fichiers dans le répertoire courant %s: [TEST LISTDIR]\n", root_dir);
-    List *list = listdir(root_dir);
-    for (int i = 0; i < list->size; i++) {
-        printf("%s\n", list->names[i]);
-    }
-
-    // file_exists:
-    char *test = "/TestFiles/test.txt";
-    if (file_exists(test)) {
-        printf("Le fichier %s existe.\n", test);
-    } else {
-        printf("Le fichier %s n'existe pas [TEST FILE_EXISTS]\n", test);
-    }
-
-    // cp
-    char *src_file = "/TestFiles/test.txt";
-    char *dest_file = "/TestFiles/test_copy.txt";
-    cp(dest_file, src_file);
-    printf("Fichier copié de %s à %s [TEST CP]\n", src_file, dest_file);
-
-    // hashToPath
-    char *hash = "5e884898da28047151d0e56f8dc6292773603ddc";
-    char *hash_path = hashToPath(hash);
-    printf("Chemin pour le hash [TEST HASHTOPATH] %s: %s\n", hash, hash_path);
-    free(hash_path);
-
-    // blobFile
-    char *file_to_blob = "/TestFiles/test.txt";
-    blobFile(file_to_blob);
-    printf("Instantané du fichier %s créé [TEST BLOBFILE]\n", file_to_blob);
-
-    return 0;
-}
-#endif

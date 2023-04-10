@@ -2,8 +2,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#ifndef MAIN_H
+#define MAIN_H
 
 int hashFile(char* source, char* dest);
 char* sha256file(char* file);  
 
-int main();
+#endif

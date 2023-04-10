@@ -3,9 +3,10 @@
 #include <unistd.h>
 #include <string.h>
 #include <dirent.h>
- 
-#ifndef WORK_TREE_H_
-#define WORK_TREE_H_
+#include <sys/stat.h>
+
+#ifndef EXERCICE4_H
+#define EXERCICE4_H
 
 typedef struct {
     char * name ;

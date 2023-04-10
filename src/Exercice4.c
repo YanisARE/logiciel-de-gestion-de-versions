@@ -4,8 +4,14 @@
 #include <string.h>
 #include <dirent.h>
 #include <sys/stat.h>
-#include <sys/types.h>
+#include <sys/fcntl.h>
+#include "../headers/Exercice3.h"
+#include "../headers/Exercice2.h"
+#include "../headers/main.h"
 
+#define EX4_MAIN
+
+//Exercice4:
 
 typedef struct {
     char * name ;
@@ -19,17 +25,16 @@ typedef struct {
     int n ;
 } WorkTree ;
 
-int getChmod(const char* path) {
+int getChmod ( const char * path ){
     struct stat ret;
-    /*vérifie si la fonction stat() (qui récupère les informations sur un fichier, telles que les permissions, la taille, etc.) 
-    a réussi à récupérer les informations sur le fichier spécifié par le chemin path et stocke ces informations dans la structure ret.*/
-    if (stat(path, &ret) == -1) {
+
+    if ( stat (path , &ret) == -1) {
         return -1;
     }
-    //constantes S_IRGRP, S_IWGRP et S_IXGRP qui représentent respectivement les permissions de lecture, d'écriture et d'exécution
-    return (ret.st_mode & S_IRUSR) | (ret.st_mode & S_IWUSR) | (ret.st_mode & S_IXUSR) | /* vérifie le statut du propriétaire du fichier */
-           (ret.st_mode & S_IRGRP) | (ret.st_mode & S_IWGRP) | (ret.st_mode & S_IXGRP) | /* vérifie les permissions du groupe associé au fichier */
-           (ret.st_mode & S_IROTH) | (ret.st_mode & S_IWOTH) | (ret.st_mode & S_IXOTH); /*  vérifie les permissions pour les utilisateurs autres que le propriétaire et le groupe associé au fichier */
+    //remplacement des constantes par leur valeur a cause d'un bug 
+    return (ret.st_mode & 0400)|( ret.st_mode & 0200 )|( ret.st_mode & 0100 )| /*owner*/
+        (ret.st_mode & 0040 )|( ret.st_mode & 0020 )|( ret.st_mode & 0010 )|    /*group*/
+        (ret.st_mode & 0004 )|( ret.st_mode & 0002 )|( ret.st_mode & 0001 );    /*other*/
 }
 
 void setMode(int mode, char* path) {
@@ -37,25 +42,27 @@ void setMode(int mode, char* path) {
     sprintf(buff, "chmod %o %s", mode, path);
     system(buff);
 }
+
 // Q 4.1
 WorkFile* createWorkFile(char* name){
-    WorkFile * wf= (WorkFile * ) malloc(sizeof(WorkFile));
-    if (!wf) {
+    WorkFile * work= (WorkFile * ) malloc(sizeof(WorkFile));
+    if (!work) {
         printf("Erreur d'allocation de mémoire\n");
         return NULL;
     }
-    wf->name=strdup(name);
-    wf->hash=NULL;
-    wf->mode=0;
-    return wf;
+    work->name=strdup(name);
+    work->hash=NULL;
+    work->mode=getChmod(name);
+    return work;
 }
+
 // Q 4.2
 char* wfts(WorkFile* wf) {
-    int longnom = strlen(wf->nom);
-    int longhach = strlen(wf->hachage);
+    int longnom = strlen(wf->name);
+    int longhach = strlen(wf->hash);
     char* chaine = (char*)malloc(longnom + longhach + 12);
 
-    sprintf(chaine, "%s\t%s\t%d", wf->nom, wf->hachage, wf->mode);
+    sprintf(chaine, "nom:%s\thash:%s\tmode:%d", wf->name, wf->hash, wf->mode);
 
     return chaine;
 }
@@ -64,29 +71,28 @@ char* wfts(WorkFile* wf) {
 WorkFile* stwf(char* ch) {
     WorkFile *wf = (WorkFile *)malloc(sizeof(WorkFile));
     if (!wf) {
-        printf("Erreur d'allocation de mémoire\n");
+        printf("Erreur d'allocation de memoire\n");
         return NULL;
     }
 
-    wf->nom = (char *)malloc(256);
-    wf->hachage = (char *)malloc(41);
-
-    sscanf(ch, "nom:%s\thach:%s\tmode:%d", wf->nom, wf->hachage, &wf->mode);
+    wf->name = (char *)malloc(300);
+    wf->hash = (char *)malloc(300);
+    sscanf(ch, "nom:%s\thash:%s\tmode:%d", wf->name, wf->hash, &wf->mode);
 
     return wf;
 }
 
 // Q 4.4
-#define TAILLE_FIXE 100
+#define N 100
 WorkTree* initWorkTree() {
     WorkTree *wt = (WorkTree *)malloc(sizeof(WorkTree));
     if (!wt) {
-        printf("Erreur d'allocation de mémoire\n");
+        printf("Erreur d'allocation de mémoire dans initWorkTree\n");
         return NULL;
     }
 
-    wt->tab = (WorkFile *)calloc(TAILLE_FIXE, sizeof(WorkFile));
-    wt->taille = TAILLE_FIXE;
+    wt->tab = (WorkFile *)malloc(N*sizeof(WorkFile));
+    wt->size = N;
     wt->n = 0;
 
     return wt;
@@ -95,7 +101,7 @@ WorkTree* initWorkTree() {
 // Q 4.5
 int inWorkTree(WorkTree* wt, char* nom) {
     for (int i = 0; i < wt->n; i++) {
-        if (strcmp(wt->tab[i].nom, nom) == 0) {
+        if (strcmp(wt->tab[i].name, nom) == 0) {
             return i;
         }
     }
@@ -104,94 +110,131 @@ int inWorkTree(WorkTree* wt, char* nom) {
 }
 
 // Q 4.6
-int appendWorkTree(WorkTree* wt, char* nom, char* hachage, int mode) {
-    if (inWorkTree(wt, nom) == -1) {
-        if (wt->n >= wt->taille) {
-            printf("Le WorkTree est plein\n");
+int appendWorkTree(WorkTree* wt, char* name, char* hash, int mode) {
+    if (inWorkTree(wt, name) == -1) {
+        if (wt->n >= wt->size) {
+            printf("Le WorkTree est plein dans appendWorkTree\n");
             return -1;
         }
-
-        WorkFile *wf = &wt->tab[wt->n++];
-        wf->nom = strdup(nom);
-        wf->hachage = strdup(hachage);
+        WorkFile * wf = createWorkFile(name);
+        wf->hash = strdup(hash);
         wf->mode = mode;
-
+        wt->tab[wt->n++] = *wf; 
         return wt->n - 1;
     }
-
     return -1;
 }
 
 // Q 4.7
-
 char* wtts(WorkTree* wt) {
-    char *chaine = (char *)calloc(wt->n * (256 + 41 + 12), sizeof(char));
-    int i;
-    for (i = 0; i < wt->n; i++) {
-        char *ligne = wfts(&wt->tab[i]);
-        strcat(chaine, ligne);
-        free(ligne);
-        if (i < wt->n - 1) {
-            strcat(chaine, "\n");
-        }
-    }
-
-    return chaine;
-}
-
-// Q 4.8
-WorkTree* stwt(char* ch) {
-    WorkTree *wt = initWorkTree();
-    if (!wt) {
-        printf("Erreur d'allocation de mémoire\n");
+    int bufsize = wt->n * 300;
+    char *chaine = (char *)malloc(bufsize);
+    if (!chaine) {
+        printf("Erreur lors de l'allocation de memoire dans wtts\n");
         return NULL;
     }
 
-    char *ligne = strtok(ch, "\n");
-    while (ligne != NULL) {
-        WorkFile *wf = stwf(ligne);
-        appendWorkTree(wt, wf->nom, wf->hachage, wf->mode);
-        ligne = strtok(NULL, "\n");
+    chaine[0] = '\0';
+    for (int i = 0; i < wt->n; i++) {
+        char *ligne = wfts(&wt->tab[i]);
+        strcat(chaine, ligne);
+        strcat(chaine, "\n");
+        free(ligne);
     }
+    return chaine;
+}
 
+
+
+// Q 4.8
+WorkTree * stwt ( char * ch){
+     // On définit une variable pour suivre la position
+    size_t pos = 0;
+    int n_pos = 0;
+    // Le séparateur qui sert à séparer la chaîne
+    int sep = '\n' ;
+    // Un pointeur pour trouver le séparateur
+    char * ptr;
+        // Allocation de mémoire pour le résultat
+    char * res = malloc ( sizeof ( char ) *10000) ;
+    // Initialisation du WorkTree
+    WorkTree * wt = initWorkTree ();
+
+    // Boucle pour parcourir la chaîne
+    while (pos < strlen (ch)){
+        // Recherche du séparateur dans la chaîne
+        ptr = strchr (ch + pos , sep );
+        // Si on n'a pas trouvé de séparateur alors c'est la fin de la chaîne
+        if (ptr == NULL )
+            n_pos = strlen (ch)+1;
+        else {
+            // Sinon, on calcule la position du séparateur
+            n_pos = ptr - ch + 1;
+        }
+        // Copie de la séquence actuelle dans la variable 'res'
+        memcpy ( res , ch+pos , n_pos - pos - 1);
+        // Ajout de '\0' pour marquer la fin de la chaîne
+        res [ n_pos - pos - 1] = '\0' ;
+        // Mise à jour de la position
+        pos = n_pos ;
+        // Conversion de la séquence en WorkFile
+        WorkFile * wf = stwf ( res );
+        // On ajoute le workfile au worktree
+        appendWorkTree (wt , wf ->name , wf ->hash , wf -> mode );
+    }
     return wt;
 }
 
+
 // Q 4.9
 int wttf(WorkTree* wt, char* fichier) {
-    FILE *f = fopen(fichier, "w");
-    if (!f) {
-        printf("Erreur lors de l'ouverture du fichier\n");
+    // On convertit le WorkTree en une chaîne de caractères
+    char *chaine = wtts(wt);
+    // Si la chaîne n'existe pas on retourne une erreur
+
+    if (!chaine) {
         return -1;
     }
 
-    char *chaine = wtts(wt);
-    fprintf(f, "%s", chaine);
+    FILE *f = fopen(fichier, "w");
+    if (!f) {
+        printf("Erreur lors de l'ouverture du fichier\n");
+        free(chaine);
+        return -1;
+    }
 
+    // On écrit la chaîne dans le fichier
+    fprintf(f, "%s", chaine);
     fclose(f);
     free(chaine);
 
     return 0;
 }
 
+
 // Q 4.10
 WorkTree* ftwt(char* fichier) {
+    // Ouvre le fichier
     FILE *f = fopen(fichier, "r");
-    if (!f) {
-        printf("Erreur lors de l'ouverture du fichier\n");
-        return NULL;
-    }
+    // Si l'ouverture échoue, retourne un pointeur nul
+    if (!f) return NULL;
 
-    fseek(f, 0, SEEK_END);
-    long taille = ftell(f);
-    fseek(f, 0, SEEK_SET);
+    // Détermine la taille du fichier en utilisant fseek :
+    
+    fseek(f, 0, SEEK_END); //déplace le pointeur de position à la fin du fichier
+    long taille = ftell(f); //détermine la taille du fichier
+    fseek(f, 0, SEEK_SET); // Retourne le pointeur au début du fichier
 
     char *chaine = (char *)malloc(taille + 1);
+    if (!chaine) return NULL;
+
+    // Lit le contenu du fichier dans la chaîne
     fread(chaine, 1, taille, f);
     chaine[taille] = '\0';
 
     fclose(f);
 
+    // Convertit la chaîne en WorkTree
     WorkTree *wt = stwt(chaine);
 
     free(chaine);
@@ -199,27 +242,4 @@ WorkTree* ftwt(char* fichier) {
     return wt;
 }
 
-int main(int argc, char **argv) {
-    WorkTree *wt = initWorkTree();
-    appendWorkTree(wt, "file1.txt", "hash1", 0644);
-    appendWorkTree(wt, "file2.txt", "hash2", 0755);
 
-    char *wt_str = wtts(wt);
-    printf("WorkTree:\n%s\n", wt_str);
-
-    int ret = wttf(wt, "worktree.txt");
-    if (ret == 0) {
-        printf("WorkTree écrit dans le fichier worktree.txt\n");
-    }
-
-    WorkTree *wt_read = ftwt("worktree.txt");
-    char *wt_read_str = wtts(wt_read);
-    printf("WorkTree lu depuis le fichier:\n%s\n", wt_read_str);
-
-    free(wt_str);
-    free(wt_read_str);
-    freeWorkTree(wt);
-    freeWorkTree(wt_read);
-
-    return 0;
-}

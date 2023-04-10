@@ -1,31 +1,47 @@
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+all: exe/main1 exe/main2 exe/main3 exe/main4 exe/main5
 
-all: exe/prog exe/ex2 exe/ex3 exe/ex4
-
-obj/Exercice2.o: src/Exercice2.c
-	$(CC) $(CFLAGS) -c $<
-
-exe/ex2: obj/Exercice2.o
-	$(CC) $(CFLAGS) -o $@ $^
-
-obj/Exercice3.o: src/Exercice3.c
-	$(CC) $(CFLAGS) -c $<
-
-exe/ex3: obj/Exercice3.o obj/main.o
-	$(CC) $(CFLAGS)  -o $@ $^
-
-exe/prog: obj/main.o obj/Exercice3.o
-	$(CC) $(CFLAGS) -o $@ $^
-
+exe/main1: obj/main.o obj/main1.o
+	gcc -o $@ $^
+obj/main1.o: src/main1.c
+	gcc -W -c $^
 obj/main.o: src/main.c
-	$(CC) $(CFLAGS) -c $<
+	gcc -W -c $^ -o $@
 
+
+exe/main2: obj/Exercice2.o obj/main2.o
+	gcc -o $@ $^
+obj/main2.o: src/main2.c
+	gcc -W -c $^
+obj/Exercice2.o: src/Exercice2.c
+	gcc -W -c $^ -o $@
+	
+exe/main3: obj/Exercice3.o obj/Exercice2.o obj/main.o
+	gcc -o $@ $^
+obj/main3.o: src/main3.c
+	gcc -W -c $^ -o $@
+obj/Exercice3.o: src/Exercice3.c
+	gcc -W -c $^ -o $@
+
+exe/main3: obj/Exercice3.o obj/Exercice2.o obj/main.o
+	gcc -o $@ $^
+obj/main3.o: src/main3.c
+	gcc -W -c $^ -o $@
+obj/Exercice3.o: src/Exercice3.c
+	gcc -W -c $^ -o $@
+
+exe/main4: obj/Exercice4.o obj/Exercice3.o obj/Exercice2.o obj/main.o 
+	gcc -o $@ $^
+obj/main4.o: src/main4.c
+	gcc -W -c $^ -o $@
 obj/Exercice4.o: src/Exercice4.c
-	$(CC) $(CFLAGS) -c $<
+	gcc -W -c $^ -o $@
 
-exe/ex4: obj/Exercice4.o
-	$(CC) $(CFLAGS) -o $@ $^
+exe/main5: obj/Exercice5.o obj/Exercice4.o obj/Exercice3.o obj/Exercice2.o obj/main.o 
+	gcc -o $@ $^
+obj/main5.o: src/main5.c
+	gcc -W -c $^ -o $@
+obj/Exercice5.o: src/Exercice5.c
+	gcc -W -c $^ -o $@
 
 clean:
-	rm -f *.o exe/prog exe/ex2 exe/ex3
+	rm -f obj/*.o exe/main1 exe/main2 exe/main3 exe/main4 exe/main5

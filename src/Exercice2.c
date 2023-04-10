@@ -3,14 +3,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include "../headers/Exercice2.h"
+
 #define MAIN2
 //Exercice 2 : 
 
-typedef struct cell {
-    char * data ;
-    struct cell * next ;
-} Cell ;
-typedef Cell * List ;
+
 
 List* initList() {
     List l = malloc(sizeof(Cell));
@@ -21,23 +19,23 @@ List* initList() {
 }
 
 
-Cell* buildCell(char* ch) {
-    Cell* new_cell = malloc(sizeof(Cell));
+List buildCell(char* ch) {
+    List new_cell = malloc(sizeof(Cell));
     new_cell->data = malloc(strlen(ch) + 1);
     strcpy(new_cell->data, ch);
     new_cell->next = NULL;
     return new_cell;
 }
 
-void insertFirst(List* L, Cell* C) {
+void insertFirst(List* L, List C) {
     C->next = (*L)->next;
     (*L)->next = C;
 }
-char* ctos(Cell* c) {
+char* ctos(List c) {
     return c->data;
 }
 char* ltos(List* L) {
-    Cell* chaine_curr = (*L)->next;
+    List chaine_curr = (*L)->next;
     char* resultat = malloc(1); // allocation d'un caractère nul pour la chaîne vide
     resultat[0] = '\0';
     while (chaine_curr != NULL) {
@@ -50,8 +48,8 @@ char* ltos(List* L) {
     return resultat;
 }
 
-Cell* listGet(List* L, int i) {
-    Cell* curr = (*L)->next;
+List listGet(List* L, int i) {
+    List curr = (*L)->next;
     int indice = 0;
 
     while (curr != NULL && indice < i) {
@@ -62,8 +60,8 @@ Cell* listGet(List* L, int i) {
     return curr;
 }
 
-Cell* searchList(List* L, char* str) {
-    Cell* curr = (*L)->next;
+List searchList(List* L, char* str) {
+    List curr = (*L)->next;
     while (curr != NULL) {
         if (strcmp(curr->data, str) == 0) {
             return curr;
@@ -98,20 +96,3 @@ List* ftol(char* path) {
 }
 
 
-//#ifndef MAIN2
-int main(){
-    //system("ls");
-    List* L = initList();
-    
-    insertFirst(L, buildCell("one"));
-    insertFirst(L, buildCell("two"));
-    insertFirst(L, buildCell("three"));
-    
-    printf("L : %s\n", ltos(L));
-    
-    Cell* Cellule = listGet(L, 1);
-    printf("Cellule : %s\n", ctos(Cellule));
-    
-    return 0;
-}
-//#endif

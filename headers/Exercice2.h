@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include "../headers/main.h"
 #ifndef EXERCICE2_H
 #define EXERCICE2_H
 
@@ -11,10 +12,14 @@ typedef struct cell {
 } Cell ;
 typedef Cell * List ;
 
-List* listdir(char* root_dir) ;
-int file_exists(char *file) ;
-void cp(char *to, char *from) ;
-char* hashToPath(char* hash) ;
-void blobFile(char* file) ;
+List * initList();
+List buildCell(char *ch);
+void insertFirst(List*L, List C);
+char* ctos(List c);
+char* ltos(List*L);
+Cell* listGet(List*L, int i);
+Cell* searchList(List*L, char *str);
+Cell** stol(char *s);
+Cell** ftol(char *path);
 
 #endif
