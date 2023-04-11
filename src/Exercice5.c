@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include "../headers/exercice5.h"
+#include "../headers/Exercice5.h"
 
 //Exercice 5
 char* hashToFile(char* hash){
