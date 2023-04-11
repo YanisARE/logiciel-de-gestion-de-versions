@@ -15,7 +15,7 @@ kvp* createKeyVal(char* key, char* val);
 void freeKeyVal(kvp* kv);
 char* kvts(kvp* k);
 kvp* stkv(char* str);
-Commit* initCommit(int Ncommit);
+Commit* initCommit();
 unsigned long djb2(unsigned char *str);
 void commitSet(Commit* c, char* key, char* value);
 Commit* createCommit(char* hash, int Ncommit);
