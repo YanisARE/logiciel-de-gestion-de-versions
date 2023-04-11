@@ -1,4 +1,4 @@
-all: exe/main1 exe/main2 exe/main3 exe/main4 exe/main5 exe/main6
+all: exe/main1 exe/main2 exe/main3 exe/main4 exe/main5 exe/main6 exe/main7
 
 exe/main1: obj/main.o obj/main1.o
 	gcc -o $@ $^
@@ -41,6 +41,14 @@ exe/main6: obj/Exercice6.o obj/Exercice5.o obj/Exercice4.o obj/Exercice3.o obj/E
 obj/main6.o: src/main6.c
 	gcc -W -c $^ -o $@
 obj/Exercice6.o: src/Exercice6.c
+	gcc -W -c $^ -o $@
+
+
+exe/main7: obj/Exercice7.o obj/Exercice6.o obj/Exercice5.o obj/Exercice4.o obj/Exercice3.o obj/Exercice2.o obj/main.o  
+	gcc -o $@ $^
+obj/main7.o: src/main7.c
+	gcc -W -c $^ -o $@
+obj/Exercice7.o: src/Exercice7.c
 	gcc -W -c $^ -o $@
 
 

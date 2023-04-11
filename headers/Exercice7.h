@@ -1,5 +1,6 @@
-#include "Exercice6.h"
-
+#include "../headers/Exercice6.h"
+#ifndef EXERCICE7_H
+#define EXERCICE7_H
 
 
 void initRefs();
@@ -9,3 +10,5 @@ char * getRef ( char * ref_name );
 void createFile ( char * file );
 void myGitAdd ( char * File_or_Folder );
 void myGitCommit ( char * branch_name , char * message );
+
+#endif

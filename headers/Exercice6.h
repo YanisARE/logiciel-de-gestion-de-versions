@@ -1,6 +1,6 @@
-#include "Exercice5.h"
+#include "../headers/Exercice5.h"
 
-#ifndef EXERCICE66_H
+#ifndef EXERCICE6_H
 #define EXERCICE6_H
 
 #include <stdio.h>
