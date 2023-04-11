@@ -7,7 +7,7 @@ int main(){
     char* hash = "a1b2c3d4e5f6";
     char* path = hashToFile(hash);
     printf("Le chemin associé à %s est : %s\n", hash, path);
-    */
+    
 
     // Test pour la question 2
     WorkFile * test=createWorkFile("Test");

@@ -43,12 +43,14 @@ obj/main5.o: src/main5.c
 obj/Exercice5.o: src/Exercice5.c
 	gcc -W -c $^ -o $@
 
-exe/main6: obj/Exercice6.o obj/Exercice5.o obj/Exercice4.o obj/Exercice3.o obj/Exercice2.o obj/main.o 
+exe/main6: obj/Exercice6.o obj/Exercice5.o obj/Exercice4.o obj/Exercice3.o obj/Exercice2.o obj/main.o  
 	gcc -o $@ $^
 obj/main6.o: src/main6.c
 	gcc -W -c $^ -o $@
 obj/Exercice6.o: src/Exercice6.c
 	gcc -W -c $^ -o $@
 
+
+
 clean:
-	rm -f obj/*.o exe/main1 exe/main2 exe/main3 exe/main4 exe/main5 exe/main6
+	rm -f obj/*.o exe/*.exe
