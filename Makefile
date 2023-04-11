@@ -58,5 +58,10 @@ obj/main8.o: src/main8.c
 obj/Exercice8.o: src/Exercice8.c
 	gcc -W -c $^ -o $@
 
+exe/myGit: obj/myGit.o obj/Exercice8.o obj/Exercice7.o obj/Exercice6.o obj/Exercice5.o obj/Exercice4.o obj/Exercice3.o obj/Exercice2.o obj/main.o  
+	gcc -o $@ $^
+obj/myGit.o: src/myGit.c
+	gcc -W -c $^ -o $@
+
 clean:
 	rm -f obj/*.o exe/*.exe

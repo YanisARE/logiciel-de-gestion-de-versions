@@ -17,5 +17,5 @@ char* hashToPathCommit(char* hash);
 void printBranch(char* branch);
 List* branchList(char* branch);
 List* getAllCommits();
-
+void delete(char *filename);
 #endif

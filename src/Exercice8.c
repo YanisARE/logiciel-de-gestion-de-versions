@@ -92,3 +92,18 @@ List* getAllCommits(){
     }
     return L;
 }
+
+//Fonction Annexe : 
+
+void delete(char *filename) {
+    if (filename == NULL) {
+        printf("Le nom de fichier est vide\n");
+        return;
+    }
+    
+    if (remove(filename) == 0) {
+        printf("Le fichier '%s' a été supprimé avec succès\n", filename);
+    } else {
+        perror("Erreur lors de la suppression du fichier");
+    }
+}
