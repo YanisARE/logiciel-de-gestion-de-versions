@@ -12,6 +12,7 @@
         "stdlib.h": "c",
         "exercice2.h": "c",
         "exercice3.h": "c",
-        "exercice5.h": "c"
+        "exercice5.h": "c",
+        "exercice8.h": "c"
     }
 }

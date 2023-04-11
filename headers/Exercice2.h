@@ -13,12 +13,12 @@ typedef struct cell {
 typedef Cell * List ;
 
 List * initList();
-List buildCell(char *ch);
-void insertFirst(List*L, List C);
+List buildCell(char * ch);
+void insertFirst(List* L, List C);
 char* ctos(List c);
-char* ltos(List*L);
-Cell* listGet(List*L, int i);
-Cell* searchList(List*L, char *str);
+char* ltos(List* L);
+Cell* listGet(List* L, int i);
+Cell* searchList(List* L, char * str);
 Cell** stol(char *s);
 Cell** ftol(char *path);
 

@@ -4,8 +4,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include "../headers/Exercice8.h"
-#include "../headers/Exercice6.h"
-#include "../headers/Exercice3.h"
+
 
 //Exercice 8
 //1
