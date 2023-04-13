@@ -2,8 +2,8 @@
 
 
 int main() {
-    char* source_file = "TestFiles/test.txt";
-    char* hash_destination = "TestFiles/hash.txt";
+    char* source_file = "test.txt";
+    char* hash_destination = "hash.txt";
 
     // Test de la fonction hashFile
     int hash_result = hashFile(source_file, hash_destination);

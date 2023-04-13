@@ -176,7 +176,10 @@ int wttf(WorkTree* wt, char* fichier) {
         return -1;
     }
 
-    FILE *f = fopen(fichier, "w");
+    char path[100];
+    sprintf(path, "TestFiles/%s", fichier);
+
+    FILE *f = fopen(path, "w");
     if (!f) {
         printf("Erreur lors de l'ouverture du fichier\n");
         free(chaine);
@@ -192,10 +195,14 @@ int wttf(WorkTree* wt, char* fichier) {
 }
 
 
+
 // Q 4.10
 WorkTree* ftwt(char* fichier) {
     // Ouvre le fichier
-    FILE *f = fopen(fichier, "r");
+    char path[100];
+    sprintf(path, "TestFiles/%s", fichier);
+
+    FILE *f = fopen(path, "r");
     // Si l'ouverture échoue, retourne un pointeur nul
     if (!f) return NULL;
 
@@ -221,5 +228,6 @@ WorkTree* ftwt(char* fichier) {
 
     return wt;
 }
+
 
 

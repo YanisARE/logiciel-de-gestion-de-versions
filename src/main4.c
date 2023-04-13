@@ -8,12 +8,12 @@ int main() {
     char *wt_str = wtts(wt);
     printf("WorkTree:\n%s\n", wt_str);
 
-    int ret = wttf(wt, "TestFiles\\worktree.txt");
+    int ret = wttf(wt, "worktree.txt");
     if (ret == 0) {
         printf("WorkTree ecrit dans worktree.txt\n");
     }
 
-    WorkTree *wt_read = ftwt("TestFiles\\worktree.txt");
+    WorkTree *wt_read = ftwt("worktree.txt");
     char *wt_read_str = wtts(wt_read);
     printf("WorkTree lu depuis le fichier:\nTestFiles/%s\n", wt_read_str);
 

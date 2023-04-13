@@ -9,7 +9,8 @@
 //Exercice 8
 //1
 void initBranch(){
-    FILE* f = fopen(". current branch", "w"); fputs("master",f);
+    FILE* f = fopen("branche/.currentbranch", "w"); 
+    fputs("master",f);
     fclose(f);
 }
 
@@ -85,7 +86,7 @@ List* getAllCommits(){
         Cell* cell = *list;
         while (cell != NULL){
             if (searchList(L, cell->data) == NULL){ 
-                insertFirst(&L,buildCell(cell->data));
+                insertFirst(L,buildCell(cell->data));
             }
             cell = cell->next; 
         }

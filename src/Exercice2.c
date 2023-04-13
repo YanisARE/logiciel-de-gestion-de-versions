@@ -71,10 +71,10 @@ List searchList(List* L, char* str) {
 
 List* stol(char* s) {
     List* L = initList();
-    char* tok = strtok(s, "|"); /*strtok permet de découper une chaîne de caractères en morceaux plus petits, ici découpé selon le caractère "|" */
+    char* tok = strtok(s, "|"); 
     while (tok != NULL) {
         insertFirst(L, buildCell(tok));
-        tok = strtok(NULL, "|"); //Ici permet d'effectuer une duexième fois le découpage sur la même chaine car sans NULL il ne le ferais pas apparemment
+        tok = strtok(NULL, "|"); 
     
     }
     return L;

@@ -34,6 +34,7 @@ kvp* stkv(char* str){
 //Q3
 Commit* initCommit(){
     Commit* c = malloc(sizeof(Commit));
+    c->size = 100;
     c->T = malloc(c->size*sizeof(kvp*));
     for (int i = 0; i<c->size; i++){
         c->T[i] = NULL;

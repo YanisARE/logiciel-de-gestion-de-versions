@@ -1,0 +1,2 @@
+nom:file1.txt	hash:hash1	mode:420
+nom:file2.txt	hash:hash2	mode:493

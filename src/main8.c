@@ -8,12 +8,15 @@ int main() {
 
     // Vérifie si une branche existe
     char* branch_name = "new_branch";
+    
     if (branchExists(branch_name)) {
         printf("La branche %s existe.\n", branch_name);
     } else {
         printf("La branche %s n'existe pas.\n", branch_name);
     }
-
+    /*
+    */
+    /*
     // Crée une nouvelle branche
     createBranch(branch_name);
 
@@ -38,7 +41,8 @@ int main() {
     List* all_commits = getAllCommits();
 
     // Libère la mémoire allouée
+    
     free(current_branch);
-
+    */
     return 0;
 }
