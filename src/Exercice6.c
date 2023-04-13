@@ -1,20 +1,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "../headers/Exercice5.h"
+#include "../headers/Exercice6.h"
 
-typedef struct key_value_pair{
-    char* key;
-    char* value;
-}kvp;
-
-typedef struct hash_table{
-    kvp** T;
-    int n;
-    int size; 
-}HashTable;
-
-typedef HashTable Commit;
 
 //Q1
 kvp* createKeyVal(char* key, char* val){

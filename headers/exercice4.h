@@ -4,6 +4,9 @@
 #include <string.h>
 #include <dirent.h>
 #include <sys/stat.h>
+#include <sys/fcntl.h>
+
+#include "../headers/Exercice3.h"
 
 #ifndef EXERCICE4_H
 #define EXERCICE4_H

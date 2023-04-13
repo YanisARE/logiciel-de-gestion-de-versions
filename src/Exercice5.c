@@ -11,7 +11,7 @@ char* hashToFile(char* hash){
     char* ch2 = strdup(hash); 
     ch2[2] = '\0';
     if (stat(ch2, &st) == -1) {
-        mkdir(ch2);
+        mkdir(ch2,0700);
     }
     return hashToPath(hash);
 }

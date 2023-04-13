@@ -1,29 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <dirent.h>
-#include <sys/stat.h>
-#include <sys/fcntl.h>
-#include "../headers/Exercice3.h"
-#include "../headers/Exercice2.h"
-#include "../headers/main.h"
+#include "../headers/exercice4.h"
+
 
 #define EX4_MAIN
 
 //Exercice4:
-
-typedef struct {
-    char * name ;
-    char * hash ;
-    int mode ;
-} WorkFile ;
-
-typedef struct {
-    WorkFile * tab ;
-    int size ;
-    int n ;
-} WorkTree ;
 
 int getChmod ( const char * path ){
     struct stat ret;

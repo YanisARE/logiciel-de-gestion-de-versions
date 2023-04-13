@@ -7,14 +7,14 @@
 //1.3:
 int hashFile(char* source, char* dest){
     char buffer[256];
-    sprintf(buffer,"cat %s|sha256sum>%s",source,dest);
+    sprintf(buffer,"cat %s|sha256sum>%s/TestFiles/%s",source, dest, "hash.txt");
     system(buffer);
     return 1;
 }
 
 //1.4:
 char* sha256file(char* file){   
-    static char template [] = "/tmp/myfileXXXXXXX" ;
+    static char template [] = "TestFiles/myfileXXXXXXX" ;
     char fname [1000];
     strcpy ( fname , template ) ;
     int val_retour=hashFile(file, fname);
@@ -28,6 +28,7 @@ char* sha256file(char* file){
     strcpy(resultat, hash);
     return resultat;
 }
+
 
 
 

@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <string.h>
 #include "../headers/Exercice2.h"
-#include "../headers/main.h"
+
 
 #ifndef EXERCICE3_H
 #define EXERCICE3_H

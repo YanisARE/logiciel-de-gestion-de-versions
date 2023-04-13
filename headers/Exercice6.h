@@ -7,6 +7,18 @@
 #include <stdlib.h>
 #include <string.h>
 
+typedef struct key_value_pair{
+    char* key;
+    char* value;
+}kvp;
+
+typedef struct hash_table{
+    kvp** T;
+    int n;
+    int size; 
+}HashTable;
+
+typedef HashTable Commit;
 typedef struct key_value_pair kvp;
 typedef struct hash_table HashTable;
 typedef HashTable Commit;

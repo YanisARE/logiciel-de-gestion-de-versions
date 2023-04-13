@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include "../headers/exercice7.h"
+#include "../headers/Exercice7.h"
 
 
 #ifndef EXERCICE8_H

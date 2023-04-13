@@ -1,11 +1,9 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
 #include "../headers/Exercice2.h"
 
-#define MAIN2
 //Exercice 2 : 
 
 
