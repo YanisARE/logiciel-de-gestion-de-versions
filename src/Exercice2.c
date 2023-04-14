@@ -7,7 +7,7 @@
 //Exercice 2 : 
 
 
-
+/*Initialise une liste vide*/
 List* initList() {
     List l = malloc(sizeof(Cell));
     l->next = NULL;
@@ -16,7 +16,7 @@ List* initList() {
     return res;
 }
 
-
+/*Alloue et retourne une cellule de la liste*/
 List buildCell(char* ch) {
     List new_cell = malloc(sizeof(Cell));
     if (new_cell == NULL) {
@@ -33,6 +33,7 @@ List buildCell(char* ch) {
     return new_cell;
 }
 
+/*Ajoute un élément en tête d'une liste*/
 void insertFirst(List* L, List C) {
     if (C == NULL) {
         printf("Erreur je ne peux pas inserer de cellule null .\n");
@@ -41,9 +42,13 @@ void insertFirst(List* L, List C) {
     C->next = (*L)->next;
     (*L)->next = C;
 }
+
+/*Retourne la chaine de caracteres qu'elle représente*/
 char* ctos(List c) {
     return c->data;
 }
+
+/*Transforme une liste en une chaine de caractere avec le format : str1|str2|str3 */
 char* ltos(List* L) {
     List chaine_curr = (*L)->next;
     char* resultat = malloc(1); // allocation d'un caractère nul pour la chaîne vide
@@ -58,6 +63,7 @@ char* ltos(List* L) {
     return resultat;
 }
 
+/*Renvoie le ieme élément d'une liste*/
 List listGet(List* L, int i) {
     List curr = (*L)->next;
     int indice = 0;
@@ -70,6 +76,8 @@ List listGet(List* L, int i) {
     return curr;
 }
 
+/*Recherche un élément dans une liste à partir de son contenu et renoie la
+  reference vers lui ou NULL s'il n'est pas dans la liste */
 List searchList(List* L, char* str) {
     List curr = (*L)->next;
     while (curr != NULL) {
@@ -81,6 +89,7 @@ List searchList(List* L, char* str) {
     return NULL;
 }
 
+/*transformer une chaîne de caractères représentant une liste en une liste chaînée.*/
 List* stol(char* s) {
     //printf("rentre dans stol\n");
     List* L = initList(); //Ok
@@ -111,6 +120,16 @@ void affiche(List* L) {
     printf("\n");
 }
 
+/*Ecrire une liste dans le fichier qui se trouve à path*/
+void ltof(List* L, char* path){
+    FILE *fp = fopen(path, "w"); 
+    if (fp != NULL){
+        fputs(ltos(L), fp);
+        fclose(fp);
+    }
+}
+
+/*Lire une liste enregistree dans une fichier*/
 List* ftol(char* path) {
     FILE* f = fopen(path, "r");
     if (f == NULL) {
@@ -123,5 +142,3 @@ List* ftol(char* path) {
     buffer[strcspn(buffer, "\n")] = 0; // supprimer le retour à la ligne
     return stol(buffer);
 }
-
-
