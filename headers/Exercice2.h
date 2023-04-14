@@ -18,11 +18,12 @@ List buildCell(char * ch);
 void insertFirst(List * L, List C);
 char* ctos(List c);
 char* ltos(List * L);
-Cell* listGet(List * L, int i);
-Cell* searchList(List * L, char * str);
+Cell * listGet(List * L, int i);
+Cell * searchList(List * L, char * str);
 void insertLast(List* L, List C);
-Cell** stol(char *s);
+Cell ** stol(char *s);
 void ltof(List* L, char* path);
-Cell** ftol(char *path);
+Cell ** ftol(char *path);
+void affiche(List* L);
 
 #endif

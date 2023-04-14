@@ -51,7 +51,7 @@ char* ltos(List* L){
     if (*L == NULL){
         return ""; 
     }
-    char* ch = malloc(sizeof(char)); 
+    char* ch = malloc(2*sizeof(char)); 
     List ptr = *L;
     while (ptr != NULL){
         strcat(ch, ptr->data); 
@@ -124,7 +124,7 @@ List* stol(char* s) {
 void affiche(List* L) {
     List curr = (*L);
     while (curr != NULL) {
-        printf("%s ", curr->data);
+        printf("%s \n", curr->data);
         curr = curr->next;
     }
     printf("\n");
