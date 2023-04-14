@@ -10,6 +10,7 @@ typedef struct cell {
     char * data ;
     struct cell * next ;
 } Cell ;
+
 typedef Cell * List ;
 
 List * initList();
@@ -19,7 +20,9 @@ char* ctos(List c);
 char* ltos(List * L);
 Cell* listGet(List * L, int i);
 Cell* searchList(List * L, char * str);
+void insertLast(List* L, List C);
 Cell** stol(char *s);
+void ltof(List* L, char* path);
 Cell** ftol(char *path);
 
 #endif

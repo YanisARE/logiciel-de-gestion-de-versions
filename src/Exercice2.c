@@ -9,10 +9,8 @@
 
 /*Initialise une liste vide*/
 List* initList() {
-    List l = malloc(sizeof(Cell));
-    l->next = NULL;
     List* res = malloc(sizeof(List));
-    *res = l;
+    *res = NULL;
     return res;
 }
 
@@ -39,47 +37,53 @@ void insertFirst(List* L, List C) {
         printf("Erreur je ne peux pas inserer de cellule null .\n");
         return;
     }
-    C->next = (*L)->next;
-    (*L)->next = C;
+    C->next = (*L);
+    (*L) = C;
 }
 
-/*Retourne la chaine de caracteres qu'elle représente*/
+/*Retourne la chaine de caracteres que c représente*/
 char* ctos(List c) {
     return c->data;
 }
 
 /*Transforme une liste en une chaine de caractere avec le format : str1|str2|str3 */
-char* ltos(List* L) {
-    List chaine_curr = (*L)->next;
-    char* resultat = malloc(1); // allocation d'un caractère nul pour la chaîne vide
-    resultat[0] = '\0';
-    while (chaine_curr != NULL) {
-        char* chaine = ctos(chaine_curr);
-        resultat = realloc(resultat, strlen(resultat) + strlen(chaine) + 2);
-        strcat(resultat, chaine);
-        strcat(resultat, "|");
-        chaine_curr = chaine_curr->next;
+char* ltos(List* L){ 
+    if (*L == NULL){
+        return ""; 
     }
-    return resultat;
+    char* ch = malloc(sizeof(char)); 
+    List ptr = *L;
+    while (ptr != NULL){
+        strcat(ch, ptr->data); 
+        ptr = ptr->next;
+        if (ptr != NULL) {
+            strcat(ch, "|");
+        }
+    }
+    return ch; 
 }
 
 /*Renvoie le ieme élément d'une liste*/
 List listGet(List* L, int i) {
-    List curr = (*L)->next;
+    List curr = *L;
     int indice = 0;
 
-    while (curr != NULL && indice < i) {
+    while (curr != NULL) {
+        if (indice == i){ break;}
+
         curr = curr->next;
         indice++;
     }
-
+    if(curr == NULL){
+        printf("Index out of range !\n");
+    }
     return curr;
 }
 
 /*Recherche un élément dans une liste à partir de son contenu et renoie la
   reference vers lui ou NULL s'il n'est pas dans la liste */
 List searchList(List* L, char* str) {
-    List curr = (*L)->next;
+    List curr = *L;
     while (curr != NULL) {
         if (strcmp(curr->data, str) == 0) {
             return curr;
@@ -89,30 +93,36 @@ List searchList(List* L, char* str) {
     return NULL;
 }
 
+/*Fonction annexe pour stol*/
+void insertLast(List* L, List C) {
+    List curr = (*L);
+    if(curr == NULL){
+        curr = C;
+    }else{
+        while(curr->next){
+            curr = curr->next;
+        }
+        curr->next = C;
+    }
+    C->next = NULL;
+}
+
 /*transformer une chaîne de caractères représentant une liste en une liste chaînée.*/
 List* stol(char* s) {
-    //printf("rentre dans stol\n");
-    List* L = initList(); //Ok
-    //printf("initlist stol\n");
+    List* L = initList();
     char * copie_s_debug=strdup(s);
-    char* tok = strtok(copie_s_debug, "|");
-    //printf("strtok stol") ;
+    char * tok = strtok(copie_s_debug, "|");
     while (tok != NULL) {
-        //printf("rentre dans while stol");
         List new_cell = buildCell(tok);
-        //printf("rentre apres buildcell");
-        insertFirst(L, new_cell);
-        //printf("apres insertFirst (buildCell) ");
-        tok = strtok(NULL, "|"); 
-        //printf("apres strtok");
+        insertLast(L, new_cell);
+        tok = strtok(NULL, "|");
     }
-    
     return L;
 }
 
 //Fonction annexe ajoute pour debug:
 void affiche(List* L) {
-    List curr = (*L)->next;
+    List curr = (*L);
     while (curr != NULL) {
         printf("%s ", curr->data);
         curr = curr->next;
@@ -133,7 +143,7 @@ void ltof(List* L, char* path){
 List* ftol(char* path) {
     FILE* f = fopen(path, "r");
     if (f == NULL) {
-        printf("Impossible d'ouvrir le fichier");
+        printf("Impossible d'ouvrir le fichier\n");
         return NULL;
     }
     char buffer[1024];
@@ -142,3 +152,5 @@ List* ftol(char* path) {
     buffer[strcspn(buffer, "\n")] = 0; // supprimer le retour à la ligne
     return stol(buffer);
 }
+
+

@@ -6,7 +6,7 @@
 
 #define EX3_MAIN
 
-
+/*Prend en parametre une PATH et renvoie une liste contenant le nom des fichiers et repertoire qui s'y trouve*/
 List * listdir ( char * root_dir ){
     DIR *dp;
     struct dirent *ep;
@@ -33,6 +33,7 @@ List * listdir ( char * root_dir ){
     return L;
 }
 
+/*Retourne 1 si le fichier file existe dans le repertoire courant 0 sinon*/
 int file_exists(char* file) {
     List* L = listdir(".");
     if (L == NULL) {
@@ -48,6 +49,7 @@ int file_exists(char* file) {
     return 0;
 }
 
+/*Copie le contenu d'un fichier vers un autre, en faisant une lettre*/
 void cp(char *dest, char *src) {
     if (file_exists(src)) {
         FILE *source = fopen(src, "r");
