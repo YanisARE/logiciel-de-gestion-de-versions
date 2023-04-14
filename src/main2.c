@@ -15,7 +15,7 @@ int main() {
     // Récupération d'un élément de la liste à un indice donné
     List c = listGet(L, 1);
     printf("L'élément à l'indice 1 est : %s\n", ctos(c));
-
+    
     // Recherche d'un élément dans la liste
     List found = searchList(L, "world");
     if (found != NULL) {
@@ -27,21 +27,17 @@ int main() {
     // Conversion d'une chaîne de caractères en liste
     char* s = "foo|bar|baz";
     List* L2 = stol(s);
-    /*
     printf("La liste construite à partir de la chaîne '%s' est : %s\n", s, ltos(L2));
-
     // Lecture d'une liste à partir d'un fichier
     List* L3 = ftol("liste.txt");
     if (L3 != NULL) {
         printf("La liste lue dans le fichier est : %s\n", ltos(L3));
     }
-
     // Libération de la mémoire allouée
     free(L);
     free(c);
     free(found);
     free(L2);
     free(L3);
-    */
     return 0;
 }

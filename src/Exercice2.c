@@ -19,13 +19,25 @@ List* initList() {
 
 List buildCell(char* ch) {
     List new_cell = malloc(sizeof(Cell));
+    if (new_cell == NULL) {
+        printf("erreur lors de l'allocution de la cellule BUILDCELL.\n");
+        exit(1);
+    }
     new_cell->data = malloc(strlen(ch) + 1);
+    if (new_cell->data == NULL) {
+        printf("erreur lors de l'allocution du data de la cellule BUILDCELL.\n");
+        exit(1);
+    }
     strcpy(new_cell->data, ch);
     new_cell->next = NULL;
     return new_cell;
 }
 
 void insertFirst(List* L, List C) {
+    if (C == NULL) {
+        printf("Erreur je ne peux pas inserer de cellule null .\n");
+        return;
+    }
     C->next = (*L)->next;
     (*L)->next = C;
 }
@@ -70,14 +82,33 @@ List searchList(List* L, char* str) {
 }
 
 List* stol(char* s) {
-    List* L = initList();
-    char* tok = strtok(s, "|"); 
+    //printf("rentre dans stol\n");
+    List* L = initList(); //Ok
+    //printf("initlist stol\n");
+    char * copie_s_debug=strdup(s);
+    char* tok = strtok(copie_s_debug, "|");
+    //printf("strtok stol") ;
     while (tok != NULL) {
-        insertFirst(L, buildCell(tok));
+        //printf("rentre dans while stol");
+        List new_cell = buildCell(tok);
+        //printf("rentre apres buildcell");
+        insertFirst(L, new_cell);
+        //printf("apres insertFirst (buildCell) ");
         tok = strtok(NULL, "|"); 
-    
+        //printf("apres strtok");
     }
+    
     return L;
+}
+
+//Fonction annexe ajoute pour debug:
+void affiche(List* L) {
+    List curr = (*L)->next;
+    while (curr != NULL) {
+        printf("%s ", curr->data);
+        curr = curr->next;
+    }
+    printf("\n");
 }
 
 List* ftol(char* path) {
