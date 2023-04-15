@@ -1,7 +1,7 @@
 #include "../headers/Exercice7.h"
 
 /*
-    crée le répertoire caché .refs
+    7.1-crée le répertoire caché .refs
 */
 void initRefs(){
     if (! file_exists (".refs")){ //On test si il n'existe pas, si oui alors on les crée 
@@ -11,7 +11,7 @@ void initRefs(){
     }
 }
 
- /*met à jour une référence en remplaçant son contenu par hash. 
+ /*7.2-met à jour une référence en remplaçant son contenu par hash. 
  Si la référence n'existe pas, la fonction commence par créer le fichier.*/
 void createUpdateRef(char* ref , char* hash){
     initRefs(); //On crée la référence si elle n'existe pas 
@@ -20,7 +20,7 @@ void createUpdateRef(char* ref , char* hash){
     system ( buffer );
 }
 
-/*permet de supprimer une référence*/
+/*Q.Annexe-permet de supprimer une référence*/
 void deleteRef ( char * ref ){
     char buffer [256];
     sprintf (buffer , " .refs/%s ", ref );
@@ -32,7 +32,7 @@ void deleteRef ( char * ref ){
     }
 }
 
-/*Récupère vers quoi pointe une référence (c-à-d le hash contenu dans le fichier). 
+/*7.4-Récupère vers quoi pointe une référence (c-à-d le hash contenu dans le fichier). 
     Si le fichier est vide, la fonction retourne une chaîne de caractère vide. Si le fichier n’existe pas, la fonciton retourne NULL.*/
 char * getRef ( char * ref_name ){
     
@@ -54,14 +54,14 @@ char * getRef ( char * ref_name ){
     return res ;
 }
 
-/*Permet de créer un fichier */
+/*Q.Annexe-Permet de créer un fichier */
 void createFile ( char * file ){
     char buff [256];
     sprintf (buff , " touch %s ", file );
     system ( buff );
 }
 
-/*permet à un utilisateur d’ajouter un fichier ou un répertoire dans le WorkTree correspondant à la zone de préparation. Si le
+/*7.5-permet à un utilisateur d’ajouter un fichier ou un répertoire dans le WorkTree correspondant à la zone de préparation. Si le
     fichier ".add" n’existe pas, il faudra d’abord le créer.*/
 void myGitAdd (char * File_or_Folder ){
     WorkTree * wt;
@@ -130,7 +130,7 @@ void myGitCommit(char *nom_branche, char *message) {
     system("rm .add");
 }
 */
-//Fonction annexe a myGitCommit qui free un worktree : 
+//Q.Annexe-Fonction annexe a myGitCommit qui free un worktree : 
 void freeWorkTree(WorkTree* wt) {
     if (wt == NULL) {
         return;
@@ -144,7 +144,10 @@ void freeWorkTree(WorkTree* wt) {
     free(wt);
 }
 
-
+/*
+7.6-réalise un commit, c’est-à-dire créer un point de sauvegarde à la
+manière de la commande git commit
+*/
 void myGitCommit(char *nom_branche, char *message) {
     if (!file_exists(".refs")) {
         printf("Il faut initialiser le fichier ref\n");

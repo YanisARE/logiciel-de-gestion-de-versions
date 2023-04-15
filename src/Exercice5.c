@@ -16,7 +16,11 @@ char* hashToFile(char* hash){
     }
     return hashToPath(hash);
 }
-
+/*
+Q1-crée un fichier temporaire
+représentant le WorkTree pour pouvoir ensuite créer l’enregistrement instantané du WorkTree (avec
+l’extension ”.t”
+*/
 char* blobWorkTree(WorkTree* wt){
     char fname [100] = "/tmp/myfileXXXXXX"; 
     int fd = mkstemp(fname);
@@ -29,7 +33,7 @@ char* blobWorkTree(WorkTree* wt){
 }
 
 
-//Q2
+//Concatene les deux chemin passe en parametre
 char* concat_paths(char* path1, char* path2) {
     char * res = malloc(strlen(path1) + strlen(path2) + 1); 
     if (res == NULL) {
@@ -42,7 +46,11 @@ char* concat_paths(char* path1, char* path2) {
     return res;
 }
 
-
+/*Q2-etant donné un WorkTree dont le chemin est donné en paramètre, 
+crée un enregistrement instantané de tout son contenu (de manière récursive), puis de lui même
+L’appel à saveWorkTree permet de conserver une sauvegarde de l’état de plusieurs fichiers à un instant
+donné
+*/
 char* saveWorkTree(WorkTree* wt, char* path) {
     struct stat path_stat;
     for (int i = 0; i < wt->n; i++) {
@@ -92,7 +100,7 @@ char* saveWorkTree(WorkTree* wt, char* path) {
 }
 
 
-//Q3
+//QAnnexe- Permet de verifier l'existence du worktree
 int isWorkTree(char* hash){
     if (file_exists(strcat(hashToPath(hash), ".t"))){
         return 1; 
@@ -102,7 +110,9 @@ int isWorkTree(char* hash){
     }
     return -1;
 }
-
+/*Q3-restaurer un WorkTree c’est-à-dire qui recrée l’arborescence des
+fichiers comme décrit par ses enregistrements instantanés
+*/
 void restoreWorkTree(WorkTree* wt, char* path){
     for(int i=0; i < wt->n; i++){
         char* absPath = concat_paths(path, wt->tab[i].name); 

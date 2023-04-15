@@ -1,7 +1,7 @@
 #include "../headers/Exercice9.h"
 
 
-/*Q1
+/*Q9.1
 Permet de restaurer le worktree associé à un commit dont le hash est donné en paramètre.
 */
 void restoreCommit(char* hash_commit) {
@@ -12,7 +12,7 @@ void restoreCommit(char* hash_commit) {
     restoreWorkTree(wt, ".");
 }
 
-/*Q2
+/*Q9.2
 La fonction myGitCheckoutBranch permet de changer la branche courante en spécifiant le nom de la nouvelle branche en paramètre, 
 et de restaurer le worktree associé au dernier commit de cette branche.
 */
@@ -28,7 +28,7 @@ void myGitCheckoutBranch(char* branch) {
 
 
 /*
-Q3:
+Q9.3:
  retourne une nouvelle liste contenant uniquement les éléments de L qui commencent par la chaîne de caractères pattern.
 */
 List *filterList(List *L, char *pattern) {
@@ -58,7 +58,7 @@ int listSize(List *L) {
     return count;
 }
 
-/*Q4
+/*Q9.4
   void myGitCheckoutCommit(char* pattern) qui procède comme décrit au début de l'exercice.
  */
 void myGitCheckoutCommit(char *pattern) {

@@ -7,20 +7,25 @@
 
 
 //Exercice 8
-//1
+/*8.1-cr´ee le fichier cach´e .current branch contenant
+la chaˆıne de caract`eres ”master
+*/
 void initBranch(){
     FILE* f = fopen("branche/.currentbranch", "w"); 
     fputs("master",f);
     fclose(f);
 }
 
-//2
+/*8.2-v´erifie l’existence d’une branche
+*/
 int branchExists(char* branch){
     List* refs = listdir(".refs");
     return searchList(refs, branch) != NULL;
 }
 
-//3
+/*8.3-cr´ee une r´ef´erence appel´ee branch,
+qui pointe vers le mˆeme commit que la r´ef´erence HEAD
+*/
 void createBranch(char* branch){
     char* hash = getRef("HEAD");
     createUpdateRef(branch , hash);
@@ -34,6 +39,9 @@ char* getCurrentBranch(){
     fscanf(f,"%s",buff);
     return buff;
 }
+*/
+/*8.5- lit le fichier cach´e .current branch pour
+retourner le nom de la branche courante
 */
 char* getCurrentBranch() {
     FILE* f = fopen(".current_branch", "r");
@@ -54,7 +62,8 @@ char* getCurrentBranch() {
     return buff;
 }
 
-//5
+/*Q.Annexe: Transforme un hash en chemin
+*/
 char* hashToPathCommit(char* hash){
     if (hash == NULL) {
         return NULL;
@@ -83,6 +92,9 @@ void printBranch(char* branch){
 }
 */
 //Fonction non segmenté avec des conditions pour eviter les segmentations fault
+/*8.6-parcourt la branche appel´ee
+branch, et pour chacun de ses commits, affiche son hash et son message descriptif 
+*/
 void printBranch(char* branch) {
     if (branch == NULL) {
         printf("Erreur: nom de branche invalide\n");
@@ -129,6 +141,9 @@ List* branchList(char* branch){
     return L;
 }
 */
+/*8.6-contruit et retourne une liste
+chaˆın´ee contenant le hash de tous les commits de la branche
+*/
 List* branchList(char* branch){
     List* L = initList();
     char* commit_hash = getRef(branch);
@@ -145,7 +160,9 @@ List* branchList(char* branch){
     return L;
 }
 
-//7
+/*8.7-renvoie la liste des hash des commits de
+toutes les branches (sans r´ep´etition).
+*/
 List* getAllCommits(){
     List* L = initList();
     List* content = listdir(".refs");
@@ -163,8 +180,7 @@ List* getAllCommits(){
     return L;
 }
 
-//Fonction Annexe : 
-
+//Fonction Annexe : Supprime le fichier dont le nom a ete passe en parametre 
 void delete(char *filename) {
     if (filename == NULL) {
         printf("Le nom de fichier est vide\n");

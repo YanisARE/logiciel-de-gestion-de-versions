@@ -4,34 +4,34 @@
 #include "../headers/Exercice6.h"
 
 
-//Q1
+//Q1-permettant d’allouer et d’initialiser un élément
 kvp* createKeyVal(char* key, char* val){
     kvp* k = malloc(sizeof(kvp));
     k->key = strdup(key);
     k->value = strdup(val);
     return k;
 }
-
+//permettant de libérer la mémoire associé à un élémen
 void freeKeyVal(kvp* kv){
     free(kv->key);
     free(kv->value); 
     free(kv);
 }
 
-//Q2
+//Q2-permet de convertir un élément en une chaîne de caractères de la forme ”clé :valeur”
 char* kvts(kvp* k){
     char* buff = malloc(sizeof(char)*100);
     sprintf(buff, "%s : %s", k->key, k->value);
     return buff;
 }
-
+// permet de faire la conversion inverse.
 kvp* stkv(char* str){
     char key [100], val [100];
     sscanf(str, "%s : %s", key, val);
     return createKeyVal(key, val);
 }
 
-//Q3
+//Q3-permet d’allouer et d’initialiser un Commit de taille fixée
 Commit* initCommit(){
     Commit* c = malloc(sizeof(Commit));
     c->size = 100;
@@ -43,7 +43,7 @@ Commit* initCommit(){
     return c;
 }
 
-//Q4
+//Q4-Choix d'une fonction de hashage
 
 unsigned long djb2(unsigned char *str)
 {
@@ -56,7 +56,10 @@ unsigned long djb2(unsigned char *str)
     return hash;
 }
 
-//Q5
+/*
+Q5 - insère la paire (key, value) dans la table,
+en gérant les collisions par adressage ouvert et probing linéaire
+*/
 void commitSet(Commit* c, char* key, char* value){
     int p = djb2((unsigned char *)key) % c->size;
     while (c->T[p] != NULL){ 
@@ -66,14 +69,17 @@ void commitSet(Commit* c, char* key, char* value){
     c->n++;
 }
 
-//Q6.6
+//Q6.6-alloue et initialise un Commit, puis ajoute l’élément obligatoire correspondant à la clé "tree"
 Commit* createCommit(char* hash, int Ncommit){
     Commit* c = initCommit(Ncommit);
     commitSet(c, "tree", hash);
     return c;
 }
 
-//Q7
+/*
+Q7-cherche dans la table s’il existe un élément dont la clé est key 
+(en sachant que les conflits sont résolus par adressage ouvert et probing linéaire)
+*/
 char* commitGet(Commit* c, char* key){
     int p = djb2((unsigned char *)key) % c->size;
     int attempt = 0;
@@ -88,7 +94,9 @@ char* commitGet(Commit* c, char* key){
 }
 
 
-//Q8
+/*Q8-caractères représentant chacun de ses couples
+(clé, valeur), séparées par un saut de ligne
+*/
 char* cts(Commit* c){
     char* str = malloc(sizeof(char)*100*c->n);
     for (int i = 0; i < c->size; i++){
@@ -99,6 +107,7 @@ char* cts(Commit* c){
     return str;
 }
 
+//réalise la conversion inverse de cts 
 Commit* stc(char* ch){ 
     size_t pos = 0;
     size_t n_pos = 0;
@@ -124,8 +133,9 @@ Commit* stc(char* ch){
 }
 
 
-//Q9
+
 #define N 100
+//permet de charger un Commit depuis un fichier le représentant
 Commit* ftc(char* file){
     char buff[256];
     char* all = (char *) malloc(sizeof(char)*256);
@@ -141,6 +151,9 @@ Commit* ftc(char* file){
     Commit* c = stc(all);
     return c;
 }
+/*Q9-ecrit dans le fichier file la
+chaîne de caractères représentant le commit c
+*/
 void ctf(Commit* c, char* file){
     FILE *fp = fopen(file, "w");
     if (fp != NULL){
@@ -150,7 +163,9 @@ void ctf(Commit* c, char* file){
 }
 
 
-//Q10
+/*Q10-crée un enregistrement instantané d’un Commit en passant par
+un fichier temporaire. Retourne le hash du fichier temporaire
+*/
 char* blobCommit(Commit* c){
     char fname [100] = "/tmp/myfileXXXXXX";
     int fd = mkstemp(fname);
