@@ -3,6 +3,7 @@
 #include <dirent.h>
 #include <string.h>
 #include "../headers/Exercice3.h"
+#include <sys/stat.h>
 
 #define EX3_MAIN
 
@@ -12,7 +13,7 @@ List * listdir ( char * root_dir ){
     struct dirent *ep;
     List * L = initList ();
     *L = NULL ;
-    Cell * temp_cell ;
+    List temp_cell ;
     dp = opendir ( root_dir );
     if (dp != NULL ){
         while (( ep = readdir (dp)) != NULL ){
@@ -32,23 +33,31 @@ List * listdir ( char * root_dir ){
 
     return L;
 }
+/*Fonction annexe de file_exists qui permet de free une structure List:*/
+void freeList(List* L) {
+    List current = *L;
+    List next;
 
-/*Retourne 1 si le fichier file existe dans le repertoire courant 0 sinon*/
-int file_exists(char* file) {
-    List* L = listdir(".");
-    if (L == NULL) {
-        return 0;
+    while (current != NULL) {
+        next = current->next;
+        free(current->data);
+        free(current);
+        current = next;
     }
-    Cell* curr = *L;
-    while (curr != NULL) {
-        if (strcmp(curr->data, file) == 0) {
-            return 1;
-        }
-        curr = curr->next;
-    }
-    return 0;
+    *L = NULL;
 }
 
+
+/*Retourne 1 si le fichier file existe dans le repertoire courant 0 sinon*/
+struct stat st = {0};
+
+int file_exists ( char * file ) {
+    struct stat buffer ;
+    if (stat ( file , & buffer ) == 0) return 1;
+    else{
+        return 0;
+    }
+}
 /*Copie le contenu d'un fichier vers un autre, en faisant une lettre*/
 void cp(char *dest, char *src) {
     if (file_exists(src)) {

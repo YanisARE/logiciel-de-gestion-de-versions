@@ -8,7 +8,7 @@
 #ifndef EXERCICE3_H
 #define EXERCICE3_H
 
-
+void freeList(List* L);
 List* listdir(char* root_dir) ;
 char* hashToPath(char* hash) ;
 int file_exists(char *file) ;

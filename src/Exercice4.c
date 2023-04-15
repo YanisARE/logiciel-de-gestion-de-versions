@@ -140,7 +140,7 @@ char* wtts(WorkTree* wt) {
 WorkTree * stwt ( char * ch){
     if (ch==NULL){
         printf("Erreur:ch est null ");
-        return;
+        return NULL;
     }
      // On définit une variable pour suivre la position
     size_t pos = 0; //size_t=unsigned long 
@@ -153,7 +153,7 @@ WorkTree * stwt ( char * ch){
     char * res = malloc ( sizeof ( char ) *10000) ;
     if (res==NULL){
         printf("Erreur lors allocution\n");
-        return;
+        return NULL;
     }
     // Initialisation du WorkTree
     printf("Avant wt = initWorkTree ()\n");

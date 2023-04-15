@@ -5,7 +5,7 @@ int main() {
     char *root_dir = ".";
 
     // listdir:
-    printf("Liste des fichiers dans le répertoire courant %s: [TEST LISTDIR]\n", root_dir);
+    printf("Liste des fichiers dans le répertoire courant %s  : [TEST LISTDIR]\n", root_dir);
     List *list = listdir(root_dir);
     printf("Affichage list main3.c:\n");
     affiche(list);
@@ -15,7 +15,8 @@ int main() {
     }
     
     // file_exists:
-    char *test = "/TestFiles/test.txt";
+    printf("Test file_exists:\n");
+    char *test = "TestFiles/test.txt";
     if (file_exists(test)) {
         printf("Le fichier %s existe.\n", test);
     } else {
@@ -23,8 +24,8 @@ int main() {
     }
     
     // cp
-    char *src_file = "/TestFiles/test.txt";
-    char *dest_file = "/TestFiles/test_copy.txt";
+    char *src_file = "TestFiles/test.txt";
+    char *dest_file = "TestFiles/test_copy.txt";
     cp(dest_file, src_file);
     printf("Fichier copié de %s à %s [TEST CP]\n", src_file, dest_file);
     
@@ -35,9 +36,9 @@ int main() {
     free(hash_path);
     
     // blobFile
-    char *file_to_blob = "/TestFiles/test.txt";
+    char *file_to_blob = "TestFiles/test.txt";
     blobFile(file_to_blob);
     printf("Instantané du fichier %s créé [TEST BLOBFILE]\n", file_to_blob);
-
+    
     return 0;
 }
