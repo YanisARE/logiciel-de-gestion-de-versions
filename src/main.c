@@ -7,7 +7,7 @@
 //1.3:
 int hashFile(char* source, char* dest){
     char buffer[256];
-    sprintf(buffer,"cat %s|sha256sum>%s/TestFiles/%s",source, dest, "hash.txt");
+    sprintf(buffer,"cat %s|sha256sum>%sTestFiles/%s",source, dest, "hash.txt");
     system(buffer);
     return 1;
 }

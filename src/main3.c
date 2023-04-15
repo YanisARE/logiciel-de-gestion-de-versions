@@ -34,7 +34,7 @@ int main() {
     char *hash_path = hashToPath(hash);
     printf("Chemin pour le hash [TEST HASHTOPATH] %s: %s\n", hash, hash_path);
     free(hash_path);
-    
+
     // blobFile
     char *file_to_blob = "TestFiles/test.txt";
     blobFile(file_to_blob);
