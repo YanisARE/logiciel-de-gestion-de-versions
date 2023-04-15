@@ -1,5 +1,5 @@
 #include "../headers/myGit.h"
-
+#include "../headers/Exercice9.h"
 /*
 int main ( int argc , char * argv []) {
     if ( strcmp ( argv [1] , " init ") == 0) {
@@ -60,12 +60,19 @@ int main(int argc, char *argv[]) {
         printf("  clear-add : vider l'index\n");
         printf("  list-add : lister les fichiers dans l'index\n");
         printf("  commit <branche> [-m <message>] : commiter les modifications de l'index à la branche donnée avec un message optionnel\n");
+        // Ajout des commandes pour l'exercice 10
+        printf("  get-current-branch : affiche la branche courante\n");
+        printf("  branch <nom> : créer une nouvelle branche avec le nom donné\n");
+        printf("  branch-print <nom> : affiche les commits de la branche donnée\n");
+        printf("  checkout-branch <nom> : changer de branche et restaurer le worktree associé\n");
+        printf("  checkout-commit <pattern> : changer de commit et restaurer le worktree associé\n");
     return -1;
 }
 
 
     if (strcmp(argv[1], "init") == 0) {
         initRefs();
+        initBranch();
     }
 
     if (strcmp(argv[1], "list-refs") == 0) {
@@ -139,6 +146,37 @@ int main(int argc, char *argv[]) {
         }
         myGitCommit(argv[2], message);
     }
+    //Ajout de l'exercice 10 :
+    if (strcmp(argv[1], "get-current-branch") == 0) {
+        printf("%s\n", getCurrentBranch());
+    }
 
+    if (strcmp(argv[1], "branch") == 0) {
+        if (!branchExists(argv[2])) {
+            createBranch(argv[2]);
+        } else {
+            printf("The branch already exists.\n");
+        }
+    }
+
+    if (strcmp(argv[1], "branch-print") == 0) {
+        if (!branchExists(argv[2])) {
+            printf("The branch does not exist.\n");
+        } else {
+            printBranch(argv[2]);
+        }
+    }
+
+    if (strcmp(argv[1], "checkout-branch") == 0) {
+        if (!branchExists(argv[2])) {
+            printf("The branch does not exist.\n");
+        } else {
+            myGitCheckoutBranch(argv[2]);
+        }
+    }
+
+    if (strcmp(argv[1], "checkout-commit") == 0) {
+        myGitCheckoutCommit(argv[2]);
+    }
     return 0;
 }

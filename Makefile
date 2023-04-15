@@ -1,4 +1,4 @@
-all: exe/main1 exe/main2 exe/main3 exe/main4 exe/main5 exe/main6 exe/main7 exe/main8 exe/myGit
+all: exe/main1 exe/main2 exe/main3 exe/main4 exe/main5 exe/main6 exe/main7 exe/myGit exe/main8 exe/main9
 
 exe/main1: obj/main.o obj/main1.o
 	gcc -o $@ $^
@@ -51,6 +51,11 @@ obj/main7.o: src/main7.c
 obj/Exercice7.o: src/Exercice7.c
 	gcc -W -c $^ -o $@
 
+exe/myGit: obj/Exercice9.o obj/myGit.o obj/Exercice8.o obj/Exercice7.o obj/Exercice6.o obj/Exercice5.o obj/Exercice4.o obj/Exercice3.o obj/Exercice2.o obj/main.o  obj/myGit.o
+	gcc -o $@ $^
+obj/myGit.o: src/myGit.c
+	gcc -W -c $^ -o $@
+
 exe/main8: obj/Exercice8.o obj/Exercice7.o obj/Exercice6.o obj/Exercice5.o obj/Exercice4.o obj/Exercice3.o obj/Exercice2.o obj/main.o  obj/main8.o
 	gcc -o $@ $^
 obj/main8.o: src/main8.c
@@ -58,9 +63,11 @@ obj/main8.o: src/main8.c
 obj/Exercice8.o: src/Exercice8.c
 	gcc -W -c $^ -o $@
 
-exe/myGit: obj/myGit.o obj/Exercice8.o obj/Exercice7.o obj/Exercice6.o obj/Exercice5.o obj/Exercice4.o obj/Exercice3.o obj/Exercice2.o obj/main.o  obj/myGit.o
+exe/main9: obj/Exercice9.o obj/Exercice8.o obj/Exercice7.o obj/Exercice6.o obj/Exercice5.o obj/Exercice4.o obj/Exercice3.o obj/Exercice2.o obj/main.o  obj/main8.o
 	gcc -o $@ $^
-obj/myGit.o: src/myGit.c
+obj/main9.o: src/main9.c
+	gcc -W -c $^ -o $@
+obj/Exercice9.o: src/Exercice9.c
 	gcc -W -c $^ -o $@
 
 clean:

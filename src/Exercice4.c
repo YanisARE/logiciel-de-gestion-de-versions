@@ -1,7 +1,6 @@
 #include "../headers/exercice4.h"
 
 
-#define EX4_MAIN
 
 //Exercice4:
 

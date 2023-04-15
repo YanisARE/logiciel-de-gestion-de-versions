@@ -132,7 +132,7 @@ Commit* ftc(char* file){
     //memset(all, 0, sizeof(char)*256); // On initialise all comme une chaine vide de taille 256
     FILE* f = fopen(file, "r");
     if (f == NULL){
-        printf("ERROR: file does not exist \n");
+        printf("Erreur: le fichier n'existe pas ftc \n");
         return NULL;
     }
     while (fgets(buff, N, f) != NULL){

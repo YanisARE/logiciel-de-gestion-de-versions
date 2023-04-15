@@ -56,6 +56,9 @@ char* getCurrentBranch() {
 
 //5
 char* hashToPathCommit(char* hash){
+    if (hash == NULL) {
+        return NULL;
+    }
     char* buff = malloc(sizeof(char)*100);
     sprintf(buff, "%s.c", hashToPath(hash));
     return buff;
