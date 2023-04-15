@@ -13,6 +13,25 @@ int hashFile(char* source, char* dest){
 }
 
 //1.4:
+char * sha256file(char * file ) {
+    static char template [] = "/tmp/myfileXXXXXX";
+    char fname [1000];
+    strcpy (fname,template);
+    int fd = mkstemp (fname) ;
+    char cmd [20000];
+    sprintf (cmd," cat %s | sha256sum > %s ", file , fname);
+    system (cmd);
+    char * hash = (char*) malloc(65* sizeof ( char ) ) ;
+    FILE * f = fopen(fname,"r") ;
+    fgets (hash ,65,f ) ;
+    hash [64] = '\0' ;
+    char command [10000];
+    sprintf (command, "rm %s ", fname ) ;
+    system (command) ;
+
+    return hash ;
+}
+/* fonctionnait au debut puis nous a cree un probleme a l'exercice 6 donc on a pris celle de la correction 
 char* sha256file(char* file){   
     static char template [] = "TestFiles/myfileXXXXXXX" ;
     char fname [1000];
@@ -28,7 +47,7 @@ char* sha256file(char* file){
     strcpy(resultat, hash);
     return resultat;
 }
-
+*/
 
 
 

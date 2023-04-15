@@ -128,7 +128,8 @@ Commit* stc(char* ch){
 #define N 100
 Commit* ftc(char* file){
     char buff[256];
-    char* all = malloc(sizeof(char)*256);
+    char* all = (char *) malloc(sizeof(char)*256);
+    //memset(all, 0, sizeof(char)*256); // On initialise all comme une chaine vide de taille 256
     FILE* f = fopen(file, "r");
     if (f == NULL){
         printf("ERROR: file does not exist \n");

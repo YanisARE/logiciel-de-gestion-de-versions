@@ -90,8 +90,12 @@ WorkTree* initWorkTree() {
 
 // Q 4.5
 int inWorkTree(WorkTree* wt, char* nom) {
+    if (wt == NULL || wt->tab == NULL || nom == NULL) {
+        return -1;
+    }
+
     for (int i = 0; i < wt->n; i++) {
-        if (strcmp(wt->tab[i].name, nom) == 0) {
+        if (wt->tab[i].name != NULL && strcmp(wt->tab[i].name, nom) == 0) {
             return i;
         }
     }
@@ -99,9 +103,14 @@ int inWorkTree(WorkTree* wt, char* nom) {
     return -1;
 }
 
+
 // Q 4.6
-int appendWorkTree(WorkTree* wt, char* name, char* hash, int mode) {
+/*int appendWorkTree(WorkTree* wt, char* name, char* hash, int mode) {
+    printf("Avant inWorkTree dans append worktree");
+    printf("wt vaut : %p",wt);
+    printf("name vaut : %s",name);
     if (inWorkTree(wt, name) == -1) {
+        printf("inWorkTree renvoie:",inWorkTree(wt, name) );
         if (wt->n >= wt->size) {
             printf("Le WorkTree est plein dans appendWorkTree\n");
             return -1;
@@ -114,8 +123,38 @@ int appendWorkTree(WorkTree* wt, char* name, char* hash, int mode) {
     }
     return -1;
 }
+*/
+/*Version modifié pour eviter les segmentation fault */
+int appendWorkTree(WorkTree* wt, char* name, char* hash, int mode) {
+    printf("Avant inWorkTree dans append worktree");
+    printf("wt vaut : %p",wt);
+    printf("name vaut : %s",name);
+    if (wt == NULL || name == NULL) {
+        printf("Error: wt or name pointer is null in appendWorkTree()\n");
+        return -1;
+    }
+    if (inWorkTree(wt, name) == -1) {
+        printf("inWorkTree renvoie:",inWorkTree(wt, name) );
+        if (wt->n >= wt->size) {
+            printf("Le WorkTree est plein dans appendWorkTree\n");
+            return -1;
+        }
+        WorkFile * wf = createWorkFile(name);
+        if (wf == NULL) {
+            printf("Error: couldn't create WorkFile in appendWorkTree()\n");
+            return -1;
+        }
+        wf->hash = strdup(hash);
+        wf->mode = mode;
+        wt->tab[wt->n++] = *wf; 
+        return wt->n - 1;
+    }
+    return -1;
+}
+
 
 // Q 4.7
+/* Version creant des segmentation fault car on a oublie encore une fois de verifier les acces memoires null
 char* wtts(WorkTree* wt) {
     int bufsize = wt->n * 300;
     char *chaine = (char *)malloc(bufsize);
@@ -133,7 +172,39 @@ char* wtts(WorkTree* wt) {
     }
     return chaine;
 }
+*/
 
+char* wtts(WorkTree* wt) {
+    if (!wt) {
+        printf("Erreur : pointeur NULL dans wtts\n");
+        return NULL;
+    }
+    int bufsize = wt->n * 300;
+    char *chaine = (char *)malloc(bufsize);
+    if (!chaine) {
+        printf("Erreur lors de l'allocation de memoire dans wtts\n");
+        return NULL;
+    }
+
+    chaine[0] = '\0';
+    for (int i = 0; i < wt->n; i++) {
+        if (!wt->tab) {
+            printf("Erreur : pointeur NULL dans wtts (tab)\n");
+            free(chaine);
+            return NULL;
+        }
+        char *ligne = wfts(&wt->tab[i]);
+        if (!ligne) {
+            printf("Erreur : pointeur NULL dans wtts (ligne)\n");
+            free(chaine);
+            return NULL;
+        }
+        strcat(chaine, ligne);
+        strcat(chaine, "\n");
+        free(ligne);
+    }
+    return chaine;
+}
 
 
 // Q 4.8
