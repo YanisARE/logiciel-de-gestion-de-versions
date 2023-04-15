@@ -6,6 +6,7 @@
 #include "../headers/Exercice5.h"
 
 //Exercice 5
+//Q1
 char* hashToFile(char* hash){
     struct stat st;
     char* ch2 = strdup(hash); 
@@ -45,29 +46,48 @@ char* concat_paths(char* path1, char* path2) {
 char* saveWorkTree(WorkTree* wt, char* path) {
     struct stat path_stat;
     for (int i = 0; i < wt->n; i++) {
+        printf("Avant char* absPath = concat_paths(path, wt->tab[i].name);\n");
         char* absPath = concat_paths(path, wt->tab[i].name);
+        printf("Apres char* absPath = concat_paths(path, wt->tab[i].name);\n");
         if (stat(absPath, &path_stat) == 0) { // vérifie si la fonction stat récupère bien les informations du fichier
+            printf("Apres stat(absPath, &path_stat) == 0\n");
             if (S_ISREG(path_stat.st_mode)) { // Vérifie si c'est un fichier
+                printf("Apres S_ISREG(path_stat.st_mode et avant blobfile)\n");
                 blobFile(absPath);
+                printf("blobfile\n");
                 wt->tab[i].hash = sha256file(absPath);
+                printf("apres sha256file\n");
                 wt->tab[i].mode = getChmod(absPath);
+                printf("getChmod\n");
             }
         } else {
             WorkTree* wt2 = initWorkTree();
+            printf("apres initWorktree\n");
             List* L = listdir(absPath);
-            for (Cell* ptr = *L; ptr != NULL; ptr = ptr->next) {
+            if(L==NULL) return NULL;
+            printf("L dans saveworktree vaut : %p",L);
+            printf(" apres listdir\n");
+            printf("ptr -> next =%p\t",(*L)->next);
+            printf(" apres printf de ptr->next\n");
+            for (List ptr = *(L); ptr != NULL; ptr = ptr->next) {
+                printf(" apres for loop\n");
                 if (ptr->data[0] == '.')
                     continue;
                 struct stat dir_stat;
                 if (stat(absPath, &dir_stat) == 0) {
+                    printf("apres if stat(absPath, &dir_stat) == 0\n");
                     mode_t dir_mode = dir_stat.st_mode & (0x1C0 | 0x38 | 0x07);
                     appendWorkTree(wt2, ptr->data, 0, dir_mode);
+                    printf("apres appendWorktree\n");
                 }
             }
+            printf("avant saveWorkTree\n");
             wt->tab[i].hash = saveWorkTree(wt2, absPath);
+            printf("apres getChmod\n");
             wt->tab[i].mode = getChmod(absPath);
         }
     }
+    printf("avant blobWorkTree(wt)\n");
     return blobWorkTree(wt);
 }
 

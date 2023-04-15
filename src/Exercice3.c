@@ -30,7 +30,7 @@ List * listdir ( char * root_dir ){
         perror ("Impossible d'ouvrir le repertoire");
     return NULL ;
     }
-
+    printf("L  dans listdir vaut :%p\n",L);
     return L;
 }
 /*Fonction annexe de file_exists qui permet de free une structure List:*/
