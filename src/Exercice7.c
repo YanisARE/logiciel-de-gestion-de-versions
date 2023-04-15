@@ -25,7 +25,7 @@ void deleteRef ( char * ref ){
     char buffer [256];
     sprintf (buffer , " .refs/%s ", ref );
     if (! file_exists ( buffer )){
-        printf ("Le fichier %s n'existe pas ", ref );
+        printf ("Le fichier %s n'existe pas\n", ref );
     }else{
         sprintf(buffer,"rm .refs/%s ",ref);
         system(buffer);
@@ -41,7 +41,7 @@ char * getRef ( char * ref_name ){
     char buff [256];
     sprintf (buff ,  " .refs/%s ", ref_name );
     if (! file_exists ( buff )){
-        printf ("Le fichier %s n'existe pas ", ref_name );
+        printf ("Le fichier %s n'existe pas\n ", ref_name );
     return NULL ;
     }
     f = fopen (buff , "r");

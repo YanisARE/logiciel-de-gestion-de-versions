@@ -1,4 +1,4 @@
-all: exe/main1 exe/main2 exe/main3 exe/main4 exe/main5 exe/main6 exe/main7 exe/main8
+all: exe/main1 exe/main2 exe/main3 exe/main4 exe/main5 exe/main6 exe/main7 exe/main8 exe/myGit
 
 exe/main1: obj/main.o obj/main1.o
 	gcc -o $@ $^

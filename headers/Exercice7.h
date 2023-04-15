@@ -10,5 +10,5 @@ char * getRef ( char * ref_name );
 void createFile ( char * file );
 void myGitAdd ( char * File_or_Folder );
 void myGitCommit ( char * branch_name , char * message );
-
+void freeWorkTree(WorkTree* wt);
 #endif
