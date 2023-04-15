@@ -4,7 +4,8 @@
 #include <string.h>
 
 
-//1.3:
+//1.3 - Fonction qui calcule le hash du contenu d'un fichier source
+// et l'écrit dans un fichier de destination.
 int hashFile(char* source, char* dest){
     char buffer[256];
     sprintf(buffer,"cat %s|sha256sum>%sTestFiles/%s",source, dest, "hash.txt");
@@ -12,7 +13,8 @@ int hashFile(char* source, char* dest){
     return 1;
 }
 
-//1.4:
+//1.4:- Fonction qui calcule le hash du contenu d'un fichier en utilisant
+// la commande sha256sum de Linux et retourne une chaîne de caractères représentant le hash.
 char * sha256file(char * file ) {
     static char template [] = "/tmp/myfileXXXXXX";
     char fname [1000];

@@ -7,7 +7,7 @@
 
 #define EX3_MAIN
 
-/*Prend en parametre une PATH et renvoie une liste contenant le nom des fichiers et repertoire qui s'y trouve*/
+/*3.1-Prend en parametre une PATH et renvoie une liste contenant le nom des fichiers et repertoire qui s'y trouve*/
 List * listdir ( char * root_dir ){
     DIR *dp;
     struct dirent *ep;
@@ -36,19 +36,20 @@ List * listdir ( char * root_dir ){
 /*Fonction annexe de file_exists qui permet de free une structure List:*/
 void freeList(List* L) {
     List current = *L;
-    List next;
+    List tmp;
 
     while (current != NULL) {
-        next = current->next;
+        tmp = current->tmp;
         free(current->data);
         free(current);
-        current = next;
+        current = tmp;
     }
     *L = NULL;
 }
 
 
-/*Retourne 1 si le fichier file existe dans le repertoire courant 0 sinon*/
+/*3.2-Retourne 1 si le fichier file existe dans le repertoire courant 0 sinon
+*/
 struct stat st = {0};
 
 int file_exists ( char * file ) {
@@ -58,7 +59,7 @@ int file_exists ( char * file ) {
         return 0;
     }
 }
-/*Copie le contenu d'un fichier vers un autre, en faisant une lettre*/
+/*3.3-Copie le contenu d'un fichier vers un autre, en faisant une lettre*/
 void cp(char *dest, char *src) {
     if (file_exists(src)) {
         FILE *source = fopen(src, "r");
@@ -76,7 +77,7 @@ void cp(char *dest, char *src) {
     }
 }
 
-
+/*3.4-retourne le chemin d’un fichier à partir de son hash*/
 char* hashToPath(char* hash) {
     if (hash == NULL) {
         return NULL;
@@ -88,7 +89,7 @@ char* hashToPath(char* hash) {
     return chemin;
 }
 
-
+/*3.5-enregistre un instantané du fichier donné en entrée*/
 void blobFile(char* file) {
     if (!file_exists(file)) {
         printf("Le fichier n'existe pas\n");

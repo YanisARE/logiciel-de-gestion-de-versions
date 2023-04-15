@@ -22,7 +22,7 @@ void setMode(int mode, char* path) {
     system(buff);
 }
 
-// Q 4.1
+// Q 4.1 -Permet de créer un workfile et de l'initialiser
 WorkFile* createWorkFile(char* name){
     WorkFile * work= (WorkFile * ) malloc(sizeof(WorkFile));
     if (work==NULL || name==NULL) {
@@ -35,7 +35,9 @@ WorkFile* createWorkFile(char* name){
     return work;
 }
 
-// Q 4.2
+/* Q 4.2-permet de convertir un WorkFile en chaîne de caractères 
+contenant les différents champs séparés par des tabulations
+*/
 char* wfts(WorkFile* wf) {
     //printf("Rentre dans wfts\n");
     int longnom = strlen(wf->name);
@@ -52,7 +54,7 @@ char* wfts(WorkFile* wf) {
     return chaine;
 }
 
-// Q 4.3
+// Q 4.3 -permet de convertir une chaîne de caractères représentant un WorkFile en un WorkFile
 WorkFile* stwf(char* ch) {
     WorkFile *wf = (WorkFile *)malloc(sizeof(WorkFile));
     if (!wf) {
@@ -67,7 +69,9 @@ WorkFile* stwf(char* ch) {
     return wf;
 }
 
-// Q 4.4
+/* Q 4.4-permet d'allouer un WorkTree de taille
+fixée (donnée par une constante du programme) et de l'initialiser
+*/
 #define N 100
 WorkTree* initWorkTree() {
     WorkTree *wt = (WorkTree *)malloc(sizeof(WorkTree));
@@ -87,7 +91,9 @@ WorkTree* initWorkTree() {
     return wt;
 }
 
-// Q 4.5
+/* Q 4.5-vérifie la présence d'un fichier ou répertoire dans un WorkTree. 
+retourne la position du fichier dans le tableau s'il est présent, et -1 sinon.
+*/
 int inWorkTree(WorkTree* wt, char* nom) {
     if (wt == NULL || wt->tab == NULL || nom == NULL) {
         return -1;
@@ -123,7 +129,10 @@ int inWorkTree(WorkTree* wt, char* nom) {
     return -1;
 }
 */
-/*Version modifié pour eviter les segmentation fault */
+
+/*Q 4.6-ajoute un fichier ou répertoire au WorkTree
+Version modifié pour eviter les segmentation fault 
+*/
 int appendWorkTree(WorkTree* wt, char* name, char* hash, int mode) {
     printf("Avant inWorkTree dans append worktree");
     printf("wt vaut : %p",wt);
@@ -172,7 +181,10 @@ char* wtts(WorkTree* wt) {
     return chaine;
 }
 */
-
+/*
+Q 4.7-convertit un WorkTree en une chaîne de caractères composée des
+ représentations des WorkFile séparées par un saut de ligne (caractère '\n')
+*/
 char* wtts(WorkTree* wt) {
     if (!wt) {
         printf("Erreur : pointeur NULL dans wtts\n");
@@ -206,7 +218,9 @@ char* wtts(WorkTree* wt) {
 }
 
 
-// Q 4.8
+/* Q 4.8-convertit une chaîne de caractères représentant un ´ WorkTree en un WorkTree
+
+*/
 WorkTree * stwt ( char * ch){
     if (ch==NULL){
         printf("Erreur:ch est null ");
@@ -257,7 +271,8 @@ WorkTree * stwt ( char * ch){
 }
 
 
-// Q 4.9
+/* Q 4.9 - écrit dans le fichier file lachaîne de caractères représentant un WorkTree
+*/
 int wttf(WorkTree* wt, char* fichier) {
     // On convertit le WorkTree en une chaîne de caractères
     char *chaine = wtts(wt);
@@ -287,7 +302,9 @@ int wttf(WorkTree* wt, char* fichier) {
 
 
 
-// Q 4.10
+/* Q4.10-construit un WorkTree à partir d'un
+fichier qui contient sa représentation en chaîne de caractères.
+*/
 WorkTree* ftwt(char* fichier) {
     // Ouvre le fichier
     char path[100];

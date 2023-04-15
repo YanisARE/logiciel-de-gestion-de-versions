@@ -7,14 +7,16 @@
 //Exercice 2 : 
 
 
-/*Initialise une liste vide*/
+/*2.1:-Initialise une liste vide
+*/
 List* initList() {
     List* res = malloc(sizeof(List));
     *res = NULL;
     return res;
 }
 
-/*Alloue et retourne une cellule de la liste*/
+/*2.2:-Alloue et retourne une cellule de la liste
+*/
 List buildCell(char* ch) {
     List new_cell = malloc(sizeof(Cell));
     if (new_cell == NULL) {
@@ -31,7 +33,8 @@ List buildCell(char* ch) {
     return new_cell;
 }
 
-/*Ajoute un élément en tête d'une liste*/
+/*2.3:-Ajoute un élément en tête d'une liste
+*/
 void insertFirst(List* L, List C) {
     if (C == NULL) {
         printf("Erreur je ne peux pas inserer de cellule null .\n");
@@ -41,7 +44,8 @@ void insertFirst(List* L, List C) {
     (*L) = C;
 }
 
-/*Retourne la chaine de caracteres que c représente*/
+/*2.4:-Retourne la chaine de caracteres que c représente
+*/
 char* ctos(List c) {
     return c->data;
 }
@@ -63,7 +67,8 @@ char* ltos(List* L){
     return ch; 
 }
 
-/*Renvoie le ieme élément d'une liste*/
+/*2.5:-Renvoie le ieme élément d'une liste
+*/
 List listGet(List* L, int i) {
     List curr = *L;
     int indice = 0;
@@ -80,8 +85,9 @@ List listGet(List* L, int i) {
     return curr;
 }
 
-/*Recherche un élément dans une liste à partir de son contenu et renoie la
-  reference vers lui ou NULL s'il n'est pas dans la liste */
+/*2.6:-Recherche un élément dans une liste à partir de son contenu et renvoie la
+    reference vers lui ou NULL s'il n'est pas dans la liste 
+*/
 List searchList(List* L, char* str) {
     List curr = *L;
     while (curr != NULL) {
@@ -107,7 +113,7 @@ void insertLast(List* L, List C) {
     C->next = NULL;
 }
 
-/*transformer une chaîne de caractères représentant une liste en une liste chaînée.*/
+/*2.7:-transformer une chaîne de caractères représentant une liste en une liste chaînée.*/
 List* stol(char* s) {
     List* L = initList();
     char * copie_s_debug=strdup(s);
@@ -130,7 +136,7 @@ void affiche(List* L) {
     printf("\n");
 }
 
-/*Ecrire une liste dans le fichier qui se trouve à path*/
+/*2.8:-Ecrire une liste dans le fichier qui se trouve à path*/
 void ltof(List* L, char* path){
     FILE *fp = fopen(path, "w"); 
     if (fp != NULL){
@@ -139,7 +145,7 @@ void ltof(List* L, char* path){
     }
 }
 
-/*Lire une liste enregistree dans une fichier*/
+/*2.8-Lire une liste enregistree dans une fichier*/
 List* ftol(char* path) {
     FILE* f = fopen(path, "r");
     if (f == NULL) {
