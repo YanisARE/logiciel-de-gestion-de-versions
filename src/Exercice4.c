@@ -26,7 +26,7 @@ void setMode(int mode, char* path) {
 // Q 4.1
 WorkFile* createWorkFile(char* name){
     WorkFile * work= (WorkFile * ) malloc(sizeof(WorkFile));
-    if (!work) {
+    if (work==NULL || name==NULL) {
         printf("Erreur d'allocation de mémoire\n");
         return NULL;
     }
@@ -38,12 +38,18 @@ WorkFile* createWorkFile(char* name){
 
 // Q 4.2
 char* wfts(WorkFile* wf) {
+    //printf("Rentre dans wfts\n");
     int longnom = strlen(wf->name);
-    int longhach = strlen(wf->hash);
+    //printf("Rentre apres premier strlen\n");
+    int longhach ;
+    if (wf->hash!=NULL){
+        longhach = strlen(wf->hash);
+    }
+    //printf("Rentre apres deuxieme strlen\n");
     char* chaine = (char*)malloc(longnom + longhach + 12);
-
+    //printf("Rentre apres allocution chaine et avant sprintf\n");
     sprintf(chaine, "nom:%s\thash:%s\tmode:%d", wf->name, wf->hash, wf->mode);
-
+    //printf("Rentre apres sprintf\n");
     return chaine;
 }
 
@@ -51,7 +57,7 @@ char* wfts(WorkFile* wf) {
 WorkFile* stwf(char* ch) {
     WorkFile *wf = (WorkFile *)malloc(sizeof(WorkFile));
     if (!wf) {
-        printf("Erreur d'allocation de memoire\n");
+        printf("Erreur allocation de memoire\n");
         return NULL;
     }
 
@@ -67,11 +73,15 @@ WorkFile* stwf(char* ch) {
 WorkTree* initWorkTree() {
     WorkTree *wt = (WorkTree *)malloc(sizeof(WorkTree));
     if (!wt) {
-        printf("Erreur d'allocation de mémoire dans initWorkTree\n");
+        printf("Erreur: lors allocution wt initWorkTree\n");
         return NULL;
     }
 
     wt->tab = (WorkFile *)malloc(N*sizeof(WorkFile));
+    if (!(wt->tab)){
+        printf("Erreur: allocution wt");
+        return NULL;
+    }
     wt->size = N;
     wt->n = 0;
 
@@ -128,22 +138,33 @@ char* wtts(WorkTree* wt) {
 
 // Q 4.8
 WorkTree * stwt ( char * ch){
+    if (ch==NULL){
+        printf("Erreur:ch est null ");
+        return;
+    }
      // On définit une variable pour suivre la position
-    size_t pos = 0;
+    size_t pos = 0; //size_t=unsigned long 
     int n_pos = 0;
     // Le séparateur qui sert à séparer la chaîne
     int sep = '\n' ;
     // Un pointeur pour trouver le séparateur
     char * ptr;
-        // Allocation de mémoire pour le résultat
+    // Allocation de mémoire pour le résultat
     char * res = malloc ( sizeof ( char ) *10000) ;
+    if (res==NULL){
+        printf("Erreur lors allocution\n");
+        return;
+    }
     // Initialisation du WorkTree
+    printf("Avant wt = initWorkTree ()\n");
     WorkTree * wt = initWorkTree ();
 
     // Boucle pour parcourir la chaîne
     while (pos < strlen (ch)){
+        printf("rentre dans la boucle while avant ptr = strchr (ch + pos , sep )");
         // Recherche du séparateur dans la chaîne
         ptr = strchr (ch + pos , sep );
+        printf("rentre dans la boucle while");
         // Si on n'a pas trouvé de séparateur alors c'est la fin de la chaîne
         if (ptr == NULL )
             n_pos = strlen (ch)+1;

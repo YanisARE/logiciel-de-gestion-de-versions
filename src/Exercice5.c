@@ -41,7 +41,6 @@ char* concat_paths(char* path1, char* path2) {
     return res;
 }
 
-#include <sys/stat.h>
 
 char* saveWorkTree(WorkTree* wt, char* path) {
     struct stat path_stat;
