@@ -18,4 +18,5 @@ void printBranch(char* branch);
 List* branchList(char* branch);
 List* getAllCommits();
 void delete(char *filename);
+void printBranch(char* branch);
 #endif

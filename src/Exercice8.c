@@ -27,10 +27,30 @@ void createBranch(char* branch){
 }
 
 //4
+/* Version segmenté
 char* getCurrentBranch(){
     FILE* f = fopen(".current_branch", "r"); 
     char* buff = malloc(sizeof(char)*100);
     fscanf(f,"%s",buff);
+    return buff;
+}
+*/
+char* getCurrentBranch() {
+    FILE* f = fopen(".current_branch", "r");
+    if (f == NULL) {
+        printf("Erreur: impossible d'ouvrir le fichier .current_branch\n");
+        return NULL;
+    }
+    char* buff = malloc(sizeof(char)*100);
+    if (buff == NULL) {
+        printf("Erreur: impossible d'allouer de la mémoire pour la chaine de caractères\n");
+        return NULL;
+    }
+    if (fscanf(f, "%s", buff) != 1) {
+        printf("Erreur: impossible de lire la branche courante\n");
+        free(buff);
+        return NULL;
+    }
     return buff;
 }
 
@@ -40,7 +60,7 @@ char* hashToPathCommit(char* hash){
     sprintf(buff, "%s.c", hashToPath(hash));
     return buff;
 }
-
+/* Version segmenté
 void printBranch(char* branch){
     char* commit_hash = getRef(branch);
     Commit* c = ftc(hashToPathCommit(commit_hash)); 
@@ -58,8 +78,38 @@ void printBranch(char* branch){
         }
     }
 }
+*/
+//Fonction non segmenté avec des conditions pour eviter les segmentations fault
+void printBranch(char* branch) {
+    if (branch == NULL) {
+        printf("Erreur: nom de branche invalide\n");
+        return;
+    }
+    
+    char* commit_hash = getRef(branch);
+    if (commit_hash == NULL) {
+        printf("Erreur: la branche n'existe pas\n");
+        return;
+    }
+    
+    Commit* c = ftc(hashToPathCommit(commit_hash)); 
+    while (c != NULL){
+        if (commitGet(c, "message")!=NULL){
+            printf("%s -> %s \n" ,commit_hash , commitGet(c, "message"));
+        }else{
+            printf("%s \n", commit_hash);
+        }
+        if (commitGet(c, "predecessor")!=NULL){
+            commit_hash = commitGet(c, "predecessor");
+            c = ftc(hashToPathCommit(commit_hash));
+        }else{
+            c = NULL;
+        }
+    }
+}
 
 //6
+/* Version segmenté
 List* branchList(char* branch){
     List* L = initList();
     char* commit_hash = getRef(branch);
@@ -67,6 +117,22 @@ List* branchList(char* branch){
     while (c != NULL){
         insertFirst(L, buildCell(commit_hash)); 
         if (commitGet(c, "predecessor")!=NULL){
+            commit_hash = commitGet(c, "predecessor");
+            c = ftc(hashToPathCommit(commit_hash)); 
+        }else{
+            c = NULL;
+        }
+    }
+    return L;
+}
+*/
+List* branchList(char* branch){
+    List* L = initList();
+    char* commit_hash = getRef(branch);
+    Commit* c = ftc(hashToPathCommit(commit_hash)); 
+    while (c != NULL){
+        insertFirst(L, buildCell(commit_hash)); 
+        if (c != NULL && commitGet(c, "predecessor")!=NULL){
             commit_hash = commitGet(c, "predecessor");
             c = ftc(hashToPathCommit(commit_hash)); 
         }else{

@@ -30,7 +30,7 @@ List * listdir ( char * root_dir ){
         perror ("Impossible d'ouvrir le repertoire");
     return NULL ;
     }
-    printf("L  dans listdir vaut :%p\n",L);
+    //printf("L  dans listdir vaut :%p\n",L);
     return L;
 }
 /*Fonction annexe de file_exists qui permet de free une structure List:*/
@@ -78,13 +78,15 @@ void cp(char *dest, char *src) {
 
 
 char* hashToPath(char* hash) {
+    if (hash == NULL) {
+        return NULL;
+    }
     char *chemin = malloc(strlen(hash) + 2);
     strncpy(chemin, hash, 2);
     chemin[2] = '/';
     strcpy(chemin + 3, hash + 2);
     return chemin;
 }
-
 
 
 void blobFile(char* file) {
