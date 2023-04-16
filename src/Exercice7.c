@@ -14,7 +14,11 @@ void initRefs(){
 /*7.2-met à jour une référence en remplaçant son contenu par hash. 
  Si la référence n'existe pas, la fonction commence par créer le fichier.*/
 void createUpdateRef(char* ref , char* hash){
-    if (ref==NULL || hash==NULL) return; // Vérifie si les arguments sont valides
+    if (ref==NULL || hash==NULL){
+        if (hash==NULL){
+        }
+        return; // Vérifie si les arguments sont valides
+    }
     initRefs(); //On crée la référence si elle n'existe pas 
     char buffer [256];
     sprintf (buffer , "echo %s > .refs/%s", hash , ref ); // Prépare la commande pour mettre à jour la référence
@@ -39,20 +43,20 @@ void deleteRef ( char * ref ){
 char * getRef ( char * ref_name ){
     
     FILE *f;
-    char * res = malloc ( sizeof ( char ) *256) ;
-    char buff [256];
-    sprintf (buff ,  ".refs/%s", ref_name );
-    if (! file_exists ( buff )){
-        printf ("Le fichier %s n'existe pas\n", ref_name );
-    return NULL ;
+    char * res = malloc(sizeof(char)*256) ;
+    char buff[256];
+    sprintf(buff, ".refs/%s", ref_name);
+    if (!file_exists(buff)){
+        printf ("Le fichier %s n'existe pas\n", ref_name);
+        return NULL;
     }
-    f = fopen (buff , "r"); // Ouvre le fichier en mode lecture
-    if (f == NULL ) {
-        printf ("Erreur lors de l'ouverture du fichier\n");
+    f = fopen(buff, "r"); // Ouvre le fichier en mode lecture
+    if(f == NULL){
+        printf("Erreur lors de l'ouverture du fichier\n");
         return NULL ;
     }
-    fgets (res , 256 , f); // Lit le contenu du fichier (hash)
-    fclose (f); // Ferme le fichier
+    fgets(res, 256, f); // Lit le contenu du fichier (hash)
+    fclose(f); // Ferme le fichier
     return res ; // Retourne le hash lu
 }
 

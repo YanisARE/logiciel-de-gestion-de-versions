@@ -103,14 +103,15 @@ void printBranch(char* branch) {
         printf("Erreur: nom de branche invalide\n");
         return;
     }
-    
     char* commit_hash = getRef(branch);
     if (commit_hash == NULL) {
         printf("Erreur: la branche n'existe pas\n");
         return;
     }
-    
-    Commit* c = ftc(hashToPathCommit(commit_hash)); 
+    char * path = malloc(6 + strlen(branch));
+    strcat(path, ".refs/");
+    strcat(path, branch);
+    Commit* c = ftc(path); 
     while (c != NULL){
         if (commitGet(c, "message")!=NULL){
             printf("%s -> %s \n" ,commit_hash , commitGet(c, "message"));
@@ -124,6 +125,7 @@ void printBranch(char* branch) {
             c = NULL;
         }
     }
+    free(path);
 }
 
 //6
