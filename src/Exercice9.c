@@ -4,13 +4,23 @@
 /*Q9.1
 Permet de restaurer le worktree associé à un commit dont le hash est donné en paramètre.
 */
+// Fonction pour restaurer un commit à partir de son hash
 void restoreCommit(char* hash_commit) {
-    char* chemin = hashToPathCommit(hash_commit);
-    Commit* c = ftc(chemin);
+    char* chemin = hashToPathCommit(hash_commit); // Convertir le hash du commit en chemin vers le fichier correspondant
+    
+    Commit* c = ftc(chemin); // Charger le commit en mémoire en utilisant la fonction ftc()
+
+    // On récupère le hash de l'arbre (tree) associé au commit
+    // On convertit ce hash en chemin vers le fichier d'arbre correspondant avec hashToPath
     char* tree_hash = strcat(hashToPath(commitGet(c, "tree")), ".t");
+
+    // On stock le worktree cree à partir  du chemin vers le fichier tree_hash
     WorkTree* wt = ftwt(tree_hash);
+
+    // on restaure l'arbre de travail dans le répertoire courant
     restoreWorkTree(wt, ".");
 }
+
 
 /*Q9.2
 La fonction myGitCheckoutBranch permet de changer la branche courante en spécifiant le nom de la nouvelle branche en paramètre, 

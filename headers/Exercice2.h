@@ -25,5 +25,5 @@ Cell ** stol(char *s);
 void ltof(List* L, char* path);
 Cell ** ftol(char *path);
 void affiche(List* L);
-
+void destroyList(List* L);
 #endif

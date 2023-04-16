@@ -17,9 +17,9 @@ int main() {
 
     // Récupération d'un élément de la liste à un indice donné
     List c = listGet(L, 1);
-    printf("L'élément à l'indice 1 est : %s\n", ctos(c));
+    //printf("L'élément à l'indice 1 est : %s\n", ctos(c));
     List d = listGet(L, 2);
-    printf("L'élément à l'indice 2 est : %s\n", ctos(d));
+    //printf("L'élément à l'indice 2 est : %s\n", ctos(d));
     
     // Recherche d'un élément dans la liste
     List found = searchList(L, "three");
