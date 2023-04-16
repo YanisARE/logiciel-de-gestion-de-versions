@@ -20,6 +20,9 @@ void initBranch(){
 
 /* 8.2- vérifie l’existence d’une branche */
 int branchExists(char* branch){
+    if(branch == NULL){
+        return 0;
+    }
     // On récupère la liste des références dans le dossier .refs
     List* refs = listdir(".refs");
     // On recherche la branche dans la liste des références
