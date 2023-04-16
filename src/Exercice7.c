@@ -14,6 +14,7 @@ void initRefs(){
  /*7.2-met à jour une référence en remplaçant son contenu par hash. 
  Si la référence n'existe pas, la fonction commence par créer le fichier.*/
 void createUpdateRef(char* ref , char* hash){
+    if (ref==NULL || hash==NULL) return;
     initRefs(); //On crée la référence si elle n'existe pas 
     char buffer [256];
     sprintf (buffer , " echo %s > .refs/%s ", hash , ref );
@@ -22,6 +23,7 @@ void createUpdateRef(char* ref , char* hash){
 
 /*Q.Annexe-permet de supprimer une référence*/
 void deleteRef ( char * ref ){
+    if (ref==NULL ) return;
     char buffer [256];
     sprintf (buffer , " .refs/%s ", ref );
     if (! file_exists ( buffer )){
