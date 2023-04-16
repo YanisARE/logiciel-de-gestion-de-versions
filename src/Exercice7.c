@@ -5,9 +5,9 @@
 */
 void initRefs(){
     if (! file_exists (".refs")){ //On test si il n'existe pas, si oui alors on les crée 
-        system ("mkdir .refs "); // Crée le répertoire .refs
-        system (" touch .refs/master "); // Crée le fichier .refs/master
-        system (" touch .refs/HEAD"); // Crée le fichier .refs/HEAD
+        system ("mkdir .refs"); // Crée le répertoire .refs
+        system ("touch .refs/master"); // Crée le fichier .refs/master
+        system ("touch .refs/HEAD"); // Crée le fichier .refs/HEAD
     }
 }
 
@@ -17,7 +17,7 @@ void createUpdateRef(char* ref , char* hash){
     if (ref==NULL || hash==NULL) return; // Vérifie si les arguments sont valides
     initRefs(); //On crée la référence si elle n'existe pas 
     char buffer [256];
-    sprintf (buffer , " echo %s > .refs/%s ", hash , ref ); // Prépare la commande pour mettre à jour la référence
+    sprintf (buffer , "echo %s > .refs/%s", hash , ref ); // Prépare la commande pour mettre à jour la référence
     system ( buffer ); // Exécute la commande
 }
 
@@ -25,7 +25,7 @@ void createUpdateRef(char* ref , char* hash){
 void deleteRef ( char * ref ){
     if (ref==NULL ) return; // Vérifie si l'argument est valide
     char buffer [256];
-    sprintf (buffer , " .refs/%s ", ref );
+    sprintf (buffer , ".refs/%s", ref );
     if (! file_exists ( buffer )){
         printf ("Le fichier %s n'existe pas\n", ref );
     }else{
@@ -41,9 +41,9 @@ char * getRef ( char * ref_name ){
     FILE *f;
     char * res = malloc ( sizeof ( char ) *256) ;
     char buff [256];
-    sprintf (buff ,  " .refs/%s ", ref_name );
+    sprintf (buff ,  ".refs/%s", ref_name );
     if (! file_exists ( buff )){
-        printf ("Le fichier %s n'existe pas\n ", ref_name );
+        printf ("Le fichier %s n'existe pas\n", ref_name );
     return NULL ;
     }
     f = fopen (buff , "r"); // Ouvre le fichier en mode lecture
@@ -60,7 +60,7 @@ char * getRef ( char * ref_name ){
 void createFile ( char * file ){
     if (file==NULL) return; // Vérifie si l'argument est valide
     char buff [256];
-    sprintf (buff , " touch %s ", file ); // Prépare la commande pour créer le fichier
+    sprintf (buff , "touch %s", file ); // Prépare la commande pour créer le fichier
     system ( buff ); // Exécute la commande
 }
 
@@ -79,7 +79,7 @@ void myGitAdd (char * File_or_Folder ){
         appendWorkTree (wt , File_or_Folder , "NULL",  0644); //NULL ne marche pas remplacé par 0644
         wttf (wt , ".add");
     } else {
-        printf (" Le fichier ou repertoire %s n'existe pas \n", File_or_Folder );
+        printf ("Le fichier ou repertoire %s n'existe pas\n", File_or_Folder );
         return;
     }
 }
