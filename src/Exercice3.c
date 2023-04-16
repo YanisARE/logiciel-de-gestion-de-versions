@@ -103,7 +103,7 @@ void blobFile(char* file) {
     char *hash_path = hashToPath(hash); //On creer le chemin du hash
 
     char buffer[256];
-    snprintf(buffer, sizeof(buffer), "mkdir -p .git/objects/%.2s", hash); // Crée le répertoire pour stocker les objets Git en utilisant les deux premiers caractères du hash
+    snprintf(buffer, sizeof(buffer), "mkdir -p .git/objects/%.2s", hash); // Crée le répertoire pour stocker les objets Git en utilisant les deux premiers caractères du hash (%.2s) avec l'option -p qui permet de créer tous les répertoires qui n'existerait pas
     system(buffer);
 
     char buffer2[256];
