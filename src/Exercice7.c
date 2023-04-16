@@ -65,24 +65,31 @@ void createFile ( char * file ){
 }
 
 
-/*7.5-permet à un utilisateur d’ajouter un fichier ou un répertoire dans le WorkTree correspondant à la zone de préparation. Si le
-    fichier ".add" n’existe pas, il faudra d’abord le créer.*/
-void myGitAdd (char * File_or_Folder ){
-    WorkTree * wt;
-    if (! file_exists (".add")){
-        createFile (".add");
-        wt = initWorkTree ();
+/* 7.5 - Permet à un utilisateur d’ajouter un fichier ou un répertoire dans le WorkTree correspondant à la zone de préparation. Si le
+   fichier ".add" n’existe pas, il faudra d’abord le créer. */
+void myGitAdd(char *File_or_Folder) {
+    WorkTree *wt;
+
+    // Si le fichier ".add" n'existe pas, on le crée et on initialise un nouveau WorkTree
+    if (!file_exists(".add")) {
+        createFile(".add");
+        wt = initWorkTree();
     } else {
-        wt = ftwt (".add");
+        // Sinon, on charge le WorkTree existant du fichier ".add"
+        wt = ftwt(".add");
     }
-    if ( file_exists ( File_or_Folder )){
-        appendWorkTree (wt , File_or_Folder , "NULL",  0644); //NULL ne marche pas remplacé par 0644
-        wttf (wt , ".add");
+
+    // Si le fichier ou le répertoire existe, on l'ajoute au WorkTree et on sauvegarde les modifications dans le fichier ".add"
+    if (file_exists(File_or_Folder)) {
+        appendWorkTree(wt, File_or_Folder, "NULL", 0644); //NULL ne marche pas, remplacé par 0644
+        wttf(wt, ".add");
     } else {
-        printf (" Le fichier ou repertoire %s n'existe pas \n", File_or_Folder );
+        // Si le fichier ou le répertoire n'existe pas, on affiche un message d'erreur et on retourne
+        printf(" Le fichier ou repertoire %s n'existe pas \n", File_or_Folder);
         return;
     }
 }
+
 
 
 //Q.Annexe-Fonction annexe a myGitCommit qui free un worktree : 
@@ -104,12 +111,13 @@ void freeWorkTree(WorkTree* wt) {
 manière de la commande git commit
 */
 void myGitCommit(char *nom_branche, char *message) {
+    // On vérifie si le fichier ".refs" existe, sinon on demande de l'initialiser
     if (!file_exists(".refs")) {
         printf("Il faut initialiser le fichier ref\n");
         return;
     }
 
-    // Vérifie si la branche existe
+    // On vérifie si la branche existe
     char chemin_branche[256];
     sprintf(chemin_branche, ".refs/%s", nom_branche);
     if (!file_exists(chemin_branche)) {
@@ -117,11 +125,11 @@ void myGitCommit(char *nom_branche, char *message) {
         return;
     }
 
-    // Récupère les hashs des derniers commits sur la branche et sur HEAD
+    // On récupère les hashs des derniers commits sur la branche et sur HEAD
     char *dernier_hash = getRef(nom_branche);
     char *dernier_head_hash = getRef("HEAD");
 
-    // Vérifie si le hash du dernier commit sur la branche est le même que celui sur HEAD
+    // On vérifie si le hash du dernier commit sur la branche est le même que celui sur HEAD
     if (dernier_hash == NULL || dernier_head_hash == NULL) {
         printf("Erreur: dernier_hash ou dernier_head_hash est NULL\n");
         return;
@@ -131,7 +139,7 @@ void myGitCommit(char *nom_branche, char *message) {
         return;
     }
 
-    // Crée un nouveau commit avec les modifications apportées au Working Tree
+    // On crée un nouveau commit avec les modifications apportées au Working Tree
     WorkTree *wt = ftwt(".add");
     if (wt == NULL) {
         printf("Erreur: wt est NULL\n");
@@ -143,6 +151,7 @@ void myGitCommit(char *nom_branche, char *message) {
         freeWorkTree(wt);
         return;
     }
+    // On crée un nouveau commit avec les modifications apportées au Working Tree
     Commit *c = createCommit(hash_wt, 0);
     if (c == NULL) {
         printf("Erreur: c est NULL\n");
@@ -151,17 +160,17 @@ void myGitCommit(char *nom_branche, char *message) {
         return;
     }
 
-    // Définit le hash du dernier commit comme prédecesseur du nouveau commit, s'il existe
+    // On définit le hash du dernier commit comme prédecesseur du nouveau commit, s'il existe
     if (strlen(dernier_hash) != 0) {
         commitSet(c, "predecesseur", dernier_hash);
     }
 
-    // Ajoute un message au nouveau commit, s'il est fourni
+    // On ajoute un message au nouveau commit, s'il est fourni
     if (message != NULL) {
         commitSet(c, "message", message);
     }
 
-    // Enregistre le nouveau commit et met à jour la référence de la branche et de HEAD
+    // On enregistre le nouveau commit et met à jour la référence de la branche et de HEAD
     char *hash_commit = blobCommit(c);
     if (hash_commit == NULL) {
         printf("Erreur: hash_commit est NULL\n");
@@ -173,7 +182,7 @@ void myGitCommit(char *nom_branche, char *message) {
     createUpdateRef(nom_branche, hash_commit);
     createUpdateRef("HEAD", hash_commit);
 
-    // Supprime les fichiers ajoutés à l'index de Git
+    // On supprime les fichiers ajoutés à l'index de Git
     system("rm .add");
 }
 
