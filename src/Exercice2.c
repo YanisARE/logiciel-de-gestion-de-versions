@@ -50,13 +50,42 @@ char* ctos(List c) {
     return c->data; // Retourne la chaîne de caractères stockée dans la cellule
 }
 
-/*Transforme une liste en une chaine de caractere avec le format : str1|str2|str3 */
+/*V1 ltos avec des memory leaks 
+Transforme une liste en une chaine de caractere avec le format : str1|str2|str3 */
+/*
 char* ltos(List* L){ 
     if (*L == NULL){
         return ""; 
     }
     char* ch = malloc(2*sizeof(char)); 
     List ptr = *L;
+    while (ptr != NULL){
+        strcat(ch, ptr->data); // Concatène la chaîne de caractères de la cellule actuelle à ch
+        ptr = ptr->next; // Passe à la cellule suivante
+        if (ptr != NULL) {
+            strcat(ch, "|"); // Ajoute un séparateur si ce n'est pas la dernière cellule
+        }
+    }
+    return ch; 
+}*/
+char* ltos(List* L){ 
+    if (*L == NULL){
+        return ""; 
+    }
+    int length = 0;
+    List ptr = *L;
+    while (ptr != NULL){
+        length += strlen(ptr->data) + 1; // Calcule la longueur totale nécessaire pour ch
+        ptr = ptr->next; // Passe à la cellule suivante
+    }
+    char* ch = malloc(length * sizeof(char)); 
+    if (ch == NULL) {
+        printf("Erreur lors de l'allocation de la mémoire pour ch.\n");
+        exit(1);
+    }
+    ch[0] = '\0'; // Initialise ch avec une chaîne vide
+
+    ptr = *L;
     while (ptr != NULL){
         strcat(ch, ptr->data); // Concatène la chaîne de caractères de la cellule actuelle à ch
         ptr = ptr->next; // Passe à la cellule suivante
