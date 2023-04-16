@@ -85,11 +85,17 @@ int listSize(List *L) {
  */
 void myGitCheckoutCommit(char *pattern) {
     List *L = getAllCommits();
+    printf("getAllCommts fini ici\n");
     List *filtred_list = filterList(L, pattern);
+    printf("filterList fini ici\n");
     if (listSize(filtred_list) == 1) {
+        printf("listSize fini ici\n");
         char *commit_hash = (listGet(filtred_list, 0))->data;
+        printf("listGet fini ici\n");
         createUpdateRef("HEAD", commit_hash);
+        printf("createUpdateRef fini ici\n");
         restoreCommit(commit_hash);
+        printf("restoreCommit fini ici\n");
     } else {
         if (listSize(filtred_list) == 0) {
             printf("No pattern matching.\n");

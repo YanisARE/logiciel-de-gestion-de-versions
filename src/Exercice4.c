@@ -123,36 +123,8 @@ int inWorkTree(WorkTree* wt, char* nom) {
     return -1;
 }
 
-
-// Q 4.6
-/*int appendWorkTree(WorkTree* wt, char* name, char* hash, int mode) {
-    printf("Avant inWorkTree dans append worktree");
-    printf("wt vaut : %p",wt);
-    printf("name vaut : %s",name);
-    if (inWorkTree(wt, name) == -1) {
-        printf("inWorkTree renvoie:",inWorkTree(wt, name) );
-        if (wt->n >= wt->size) {
-            printf("Le WorkTree est plein dans appendWorkTree\n");
-            return -1;
-        }
-        WorkFile * wf = createWorkFile(name);
-        wf->hash = strdup(hash);
-        wf->mode = mode;
-        wt->tab[wt->n++] = *wf; 
-        return wt->n - 1;
-    }
-    return -1;
-}
-*/
-
-/*Q 4.6-ajoute un fichier ou répertoire au WorkTree
-Version modifié pour eviter les segmentation fault 
-*/
+//Q 4.6-ajoute un fichier ou répertoire au WorkTree
 int appendWorkTree(WorkTree* wt, char* name, char* hash, int mode) {
-    //printf("Avant inWorkTree dans append worktree");
-    //printf("wt vaut : %p",wt);
-    //printf("name vaut : %s",name);
-
     // Vérifie si les pointeurs sont non null
     if (wt == NULL || name == NULL) {
         printf("Erreur: wt ou name passe en parametre est null [appendWorkTree()]\n");
@@ -181,29 +153,6 @@ int appendWorkTree(WorkTree* wt, char* name, char* hash, int mode) {
     }
     return -1;
 }
-
-
-// Q 4.7
-/* Version creant des segmentation fault car on a oublie encore une fois de verifier les acces memoires null
-char* wtts(WorkTree* wt) {
-    int buffer_taille = wt->n * 300;
-    char *chaine = (char *)malloc(buffer_taille);
-    if (!chaine) {
-        printf("Erreur lors de l'allocation de memoire dans wtts\n");
-        return NULL;
-    }
-
-    chaine[0] = '\0';
-    for (int i = 0; i < wt->n; i++) {
-        char *ligne = wfts(&wt->tab[i]);
-        strcat(chaine, ligne);
-        strcat(chaine, "\n");
-        free(ligne);
-    }
-    return chaine;
-}
-*/
-
 
 /*
 Q 4.7-convertit un WorkTree en une chaîne de caractères composée des
