@@ -45,7 +45,7 @@ char* getCurrentBranch(){
     char* buffer = malloc(sizeof(char)*100);
     fscanf(f,"%s",buffer);
     return buffer;
-}
+}*/
 
 /* 8.5- lit le fichier caché .current branch pour
 retourner le nom de la branche courante */
@@ -127,14 +127,14 @@ void printBranch(char* branch) {
     while (c != NULL){
         // On affiche le hash et le message du commit
         if (commitGet(c, "message")!=NULL){
-            printf("%s -> %s \n" ,hash_commit , commitGet(c, "message"));
+            printf("%s -> %s \n" ,commit_hash , commitGet(c, "message"));
         }else{
-            printf("%s \n", hash_commit);
+            printf("%s \n", commit_hash);
         }
         // On passe au commit précédent si disponible
         if (commitGet(c, "predecessor")!=NULL){
-            hash_commit = commitGet(c, "predecessor");
-            c = ftc(hashToPathCommit(hash_commit));
+            commit_hash = commitGet(c, "predecessor");
+            c = ftc(hashToPathCommit(commit_hash));
         }else{
             c = NULL;
         }
@@ -158,7 +158,7 @@ List* branchList(char* branch){
         }
     }
     return L;
-}
+}*/
 /* 8.6 - construit et retourne une liste
 chaînée contenant le hash de tous les commits de la branche */
 List* branchList(char* branch) {

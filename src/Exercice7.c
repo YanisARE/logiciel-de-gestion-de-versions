@@ -15,14 +15,12 @@ void initRefs(){
  Si la référence n'existe pas, la fonction commence par créer le fichier.*/
 void createUpdateRef(char* ref , char* hash){
     if (ref==NULL || hash==NULL){
-        if (hash==NULL){
-        }
         return; // Vérifie si les arguments sont valides
     }
     initRefs(); //On crée la référence si elle n'existe pas 
     char buffer [256];
-    sprintf (buffer , "echo %s > .refs/%s", hash , ref ); // Prépare la commande pour mettre à jour la référence
-    system ( buffer ); // Exécute la commande
+    sprintf (buffer, "echo %s > .refs/%s", hash ,ref); // Prépare la commande pour mettre à jour la référence
+    system (buffer); // Exécute la commande
 }
 
 /*Q.Annexe-permet de supprimer une référence*/

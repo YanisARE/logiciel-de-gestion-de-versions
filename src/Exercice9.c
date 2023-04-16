@@ -6,19 +6,27 @@ Permet de restaurer le worktree associé à un commit dont le hash est donné en
 */
 // Fonction pour restaurer un commit à partir de son hash
 void restoreCommit(char* hash_commit) {
-    char* chemin = hashToPathCommit(hash_commit); // Convertir le hash du commit en chemin vers le fichier correspondant
+    char * path = malloc(6 + strlen(hash_commit));
+    strcat(path, ".refs/");
+    strcat(path, hash_commit);
+    // On charge le commit à partir du chemin .refs/branch
+    Commit* c = ftc(path);
     
-    Commit* c = ftc(chemin); // Charger le commit en mémoire en utilisant la fonction ftc()
-
     // On récupère le hash de l'arbre (tree) associé au commit
     // On convertit ce hash en chemin vers le fichier d'arbre correspondant avec hashToPath
-    char* tree_hash = strcat(hashToPath(commitGet(c, "tree")), ".t");
+    char* tree_hash = malloc(256);
+    if(hashToPath(commitGet(c, "tree"))!=NULL){
+        printf("Il est null hashTopath\n");
+    
+        strcat(tree_hash, hashToPath(commitGet(c, "tree")));
+        strcat(tree_hash, ".t");
 
-    // On stock le worktree cree à partir  du chemin vers le fichier tree_hash
-    WorkTree* wt = ftwt(tree_hash);
+        // On stock le worktree cree à partir  du chemin vers le fichier tree_hash
+        WorkTree* wt = ftwt(tree_hash);
 
-    // on restaure l'arbre de travail dans le répertoire courant
-    restoreWorkTree(wt, ".");
+        // on restaure l'arbre de travail dans le répertoire courant
+        restoreWorkTree(wt, ".");
+    }
 }
 
 
@@ -33,7 +41,7 @@ void myGitCheckoutBranch(char* branch) {
 
     char* hash_commit = getRef(branch);
     createUpdateRef("HEAD", hash_commit);
-    restoreCommit(hash_commit);
+    restoreCommit(branch);
 }
 
 
