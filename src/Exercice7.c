@@ -56,6 +56,7 @@ char * getRef ( char * ref_name ){
 
 /*Q.Annexe-Permet de créer un fichier */
 void createFile ( char * file ){
+    if (file==NULL) return;
     char buff [256];
     sprintf (buff , " touch %s ", file );
     system ( buff );
