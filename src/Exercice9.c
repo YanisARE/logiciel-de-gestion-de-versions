@@ -39,8 +39,11 @@ void myGitCheckoutBranch(char* branch) {
     fprintf(f, "%s", branch);
     fclose(f);
 
+    // Récupération du hash du dernier commit de la branche courante
     char* hash_commit = getRef(branch);
+    //On modifie la référence HEAD pour pointer vers le dernier commit de la branche courante
     createUpdateRef("HEAD", hash_commit);
+    // Restauration du worktree correspondant au dernier commit de la branche courante
     restoreCommit(branch);
 }
 
@@ -50,16 +53,21 @@ Q9.3:
  retourne une nouvelle liste contenant uniquement les éléments de L qui commencent par la chaîne de caractères pattern.
 */
 List *filterList(List *L, char *pattern) {
-    List *filtered = initList();
+    //On initialise une nouvelle liste pour stocker les element qui commencent par le pattern
+    List *filtre = initList();
+    //On parcourt la liste L
     for (Cell *ptr = *L; ptr != NULL; ptr = ptr->next) {
+        // Duplication de l'élément courant de la liste L pour éviter de modifier le contenu de la liste
         char *c = strdup(ptr->data);
+        // Mise à zéro du caractère après le dernier caractère du pattern
         c[strlen(pattern)] = '\0';
         if (strcmp(c, pattern) == 0) {
-            insertFirst(filtered, buildCell(ptr->data));
+            // Insertion de l'élément courant dans la nouvelle liste filtrée
+            insertFirst(filtre, buildCell(ptr->data));
         }
         free(c);
     }
-    return filtered;
+    return filtre;
 }
 //Fonction annexe de myGitCheckoutCommit :
 /*
@@ -84,23 +92,27 @@ int listSize(List *L) {
     —Restaure le worktree correspondant au dernier commit de branch
  */
 void myGitCheckoutCommit(char *pattern) {
+    // On récupère la liste de tous les commits
     List *L = getAllCommits();
-    printf("getAllCommts fini ici\n");
+    // On filtre la liste pour ne conserver que les commits qui commencent par le motif pattern
     List *filtred_list = filterList(L, pattern);
-    printf("filterList fini ici\n");
+    // Si le filtrage ne laisse qu'un seul commit
     if (listSize(filtred_list) == 1) {
-        printf("listSize fini ici\n");
+        // On récupère le hash de ce commit
         char *commit_hash = (listGet(filtred_list, 0))->data;
-        printf("listGet fini ici\n");
+        // On modifie la référence HEAD pour pointer sur ce commit
         createUpdateRef("HEAD", commit_hash);
-        printf("createUpdateRef fini ici\n");
+        // On restaure le worktree correspondant au dernier commit de la branche
         restoreCommit(commit_hash);
         printf("restoreCommit fini ici\n");
     } else {
+        // Si le filtrage ne donne aucun résultat
         if (listSize(filtred_list) == 0) {
-            printf("No pattern matching.\n");
+            printf("Aucun commit trouvé.\n");
         } else {
-            printf("Multiple matchings found:\n");
+            // Si le filtrage donne plusieurs résultats
+            printf("Plusieurs commit trouvé:\n");
+            // On affiche tous les commits trouvés
             for (Cell *ptr = *filtred_list; ptr != NULL; ptr = ptr->next) {
                 printf("-> %s\n", ptr->data);
             }
