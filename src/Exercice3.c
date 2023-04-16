@@ -39,7 +39,7 @@ void freeList(List* L) {
     List tmp;
 
     while (current != NULL) {
-        tmp = current->tmp;
+        tmp = current->next;
         free(current->data);
         free(current);
         current = tmp;
