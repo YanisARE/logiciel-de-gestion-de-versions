@@ -1,5 +1,6 @@
 #include "../headers/myGit.h"
 #include "../headers/Exercice9.h"
+
 /*
 int main ( int argc , char * argv []) {
     if ( strcmp ( argv [1] , " init ") == 0) {
@@ -57,8 +58,8 @@ int main(int argc, char *argv[]) {
         printf("  create-ref <nom> <hachage> : créer ou mettre à jour une référence avec le nom et le hachage donnés\n");
         printf("  delete-ref <nom> : supprimer la référence avec le nom donné\n");
         printf("  add <fichier_ou_dossier> [fichier_ou_dossier]... : ajouter le(s) fichier(s) ou dossier(s) donné(s) à l'index\n");
-        printf("  clear-add : vider l'index\n");
-        printf("  list-add : lister les fichiers dans l'index\n");
+        printf("  clear-add : vider l'index la zone de preparation\n");
+        printf("  list-add : affiche le contenu de la zone de preparation\n");
         printf("  commit <branche> [-m <message>] : commiter les modifications de l'index à la branche donnée avec un message optionnel\n");
         // Ajout des commandes pour l'exercice 10
         printf("  get-current-branch : affiche la branche courante\n");
@@ -67,7 +68,7 @@ int main(int argc, char *argv[]) {
         printf("  checkout-branch <nom> : changer de branche et restaurer le worktree associé\n");
         printf("  checkout-commit <pattern> : changer de commit et restaurer le worktree associé\n");
     return -1;
-}
+    }
 
 
     if (strcmp(argv[1], "init") == 0) {

@@ -59,7 +59,11 @@ int listSize(List *L) {
 }
 
 /*Q9.4
-  void myGitCheckoutCommit(char* pattern) qui procède comme décrit au début de l'exercice.
+  void myGitCheckoutCommit(char* pattern) :
+    -modifie le fichier .current branch pour contenir le nom de la branche donné en paramètre.
+    —modifie la référence HEAD pour contenir le hash du dernier commit de branch (on rappelle
+    que ce hash est contenu dans le fichier branch).
+    —Restaure le worktree correspondant au dernier commit de branch
  */
 void myGitCheckoutCommit(char *pattern) {
     List *L = getAllCommits();
