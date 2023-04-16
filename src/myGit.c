@@ -162,7 +162,7 @@ int main(int argc, char *argv[]) {
 
     if (strcmp(argv[1], "branch-print") == 0) {
         if (!branchExists(argv[2])) {
-            printf("La branche existe déjà.\n");
+            printf("La branche n'existe pas.\n");
         } else {
             printBranch(argv[2]);
         }

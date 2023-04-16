@@ -19,6 +19,9 @@ void initBranch(){
 /*8.2-v´erifie l’existence d’une branche
 */
 int branchExists(char* branch){
+    if(branch == NULL){
+        return 0;
+    }
     List* refs = listdir(".refs");
     return searchList(refs, branch) != NULL;
 }
