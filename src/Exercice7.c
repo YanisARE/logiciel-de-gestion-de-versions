@@ -5,32 +5,32 @@
 */
 void initRefs(){
     if (! file_exists (".refs")){ //On test si il n'existe pas, si oui alors on les crée 
-        system ("mkdir .refs ");
-        system (" touch .refs/master ");
-        system (" touch .refs/HEAD");
+        system ("mkdir .refs "); // Crée le répertoire .refs
+        system (" touch .refs/master "); // Crée le fichier .refs/master
+        system (" touch .refs/HEAD"); // Crée le fichier .refs/HEAD
     }
 }
 
- /*7.2-met à jour une référence en remplaçant son contenu par hash. 
+/*7.2-met à jour une référence en remplaçant son contenu par hash. 
  Si la référence n'existe pas, la fonction commence par créer le fichier.*/
 void createUpdateRef(char* ref , char* hash){
-    if (ref==NULL || hash==NULL) return;
+    if (ref==NULL || hash==NULL) return; // Vérifie si les arguments sont valides
     initRefs(); //On crée la référence si elle n'existe pas 
     char buffer [256];
-    sprintf (buffer , " echo %s > .refs/%s ", hash , ref );
-    system ( buffer );
+    sprintf (buffer , " echo %s > .refs/%s ", hash , ref ); // Prépare la commande pour mettre à jour la référence
+    system ( buffer ); // Exécute la commande
 }
 
 /*Q.Annexe-permet de supprimer une référence*/
 void deleteRef ( char * ref ){
-    if (ref==NULL ) return;
+    if (ref==NULL ) return; // Vérifie si l'argument est valide
     char buffer [256];
     sprintf (buffer , " .refs/%s ", ref );
     if (! file_exists ( buffer )){
         printf ("Le fichier %s n'existe pas\n", ref );
     }else{
-        sprintf(buffer,"rm .refs/%s ",ref);
-        system(buffer);
+        sprintf(buffer,"rm .refs/%s ",ref); // Prépare la commande pour supprimer la référence
+        system(buffer); // Exécute la commande
     }
 }
 
@@ -46,23 +46,24 @@ char * getRef ( char * ref_name ){
         printf ("Le fichier %s n'existe pas\n ", ref_name );
     return NULL ;
     }
-    f = fopen (buff , "r");
+    f = fopen (buff , "r"); // Ouvre le fichier en mode lecture
     if (f == NULL ) {
         printf ("Erreur lors de l'ouverture du fichier\n");
         return NULL ;
     }
-    fgets (res , 256 , f);
-    fclose (f);
-    return res ;
+    fgets (res , 256 , f); // Lit le contenu du fichier (hash)
+    fclose (f); // Ferme le fichier
+    return res ; // Retourne le hash lu
 }
 
 /*Q.Annexe-Permet de créer un fichier */
 void createFile ( char * file ){
-    if (file==NULL) return;
+    if (file==NULL) return; // Vérifie si l'argument est valide
     char buff [256];
-    sprintf (buff , " touch %s ", file );
-    system ( buff );
+    sprintf (buff , " touch %s ", file ); // Prépare la commande pour créer le fichier
+    system ( buff ); // Exécute la commande
 }
+
 
 /*7.5-permet à un utilisateur d’ajouter un fichier ou un répertoire dans le WorkTree correspondant à la zone de préparation. Si le
     fichier ".add" n’existe pas, il faudra d’abord le créer.*/
@@ -83,56 +84,7 @@ void myGitAdd (char * File_or_Folder ){
     }
 }
 
-// Vérifie si le fichier .refs existe
-/* Meme probleme acces memoire interdit
-void myGitCommit(char *nom_branche, char *message) {
-    if (!file_exists(".refs")) {
-        printf("Il faut initialiser le fichier ref");
-        return;
-    }
-    
-    // Vérifie si la branche existe
-    char chemin_branche[256];
-    sprintf(chemin_branche, ".refs/%s", nom_branche);
-    if (!file_exists(chemin_branche)) {
-        printf("La branche n'existe pas");
-        return;
-    }
-    
-    // Récupère les hashs des derniers commits sur la branche et sur HEAD
-    char *dernier_hash = getRef(nom_branche);
-    char *dernier_head_hash = getRef("HEAD");
-    
-    // Vérifie si le hash du dernier commit sur la branche est le même que celui sur HEAD
-    if (strcmp(dernier_hash, dernier_head_hash) != 0) {
-        printf("Erreur: HEAD est différent du dernier commit");
-        return;
-    }
-    
-    // Crée un nouveau commit avec les modifications apportées au Working Tree
-    WorkTree *wt = ftwt(".add");
-    char *hash_wt = saveWorkTree(wt, ".");
-    Commit *c = createCommit(hash_wt, 0);
-    
-    // Définit le hash du dernier commit comme prédecesseur du nouveau commit, s'il existe
-    if (strlen(dernier_hash) != 0) {
-        commitSet(c, "predecesseur", dernier_hash);
-    }
-    
-    // Ajoute un message au nouveau commit, s'il est fourni
-    if (message != NULL) {
-        commitSet(c, "message", message);
-    }
-    
-    // Enregistre le nouveau commit et met à jour la référence de la branche et de HEAD
-    char *hash_commit = blobCommit(c);
-    createUpdateRef(nom_branche, hash_commit);
-    createUpdateRef("HEAD", hash_commit);
-    
-    // Supprime les fichiers ajoutés à l'index de Git
-    system("rm .add");
-}
-*/
+
 //Q.Annexe-Fonction annexe a myGitCommit qui free un worktree : 
 void freeWorkTree(WorkTree* wt) {
     if (wt == NULL) {

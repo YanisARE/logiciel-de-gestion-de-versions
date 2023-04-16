@@ -11,7 +11,7 @@ int hashFile(char* source, char* dest){
     char buffer[256];
 
     // Créer la commande pour calculer le hash SHA-256 du fichier source et le stocker dans un fichier temporaire
-    sprintf(buffer,"cat %s|sha256sum>%sTestFiles/%s",source, dest, "hash.txt");
+    sprintf(buffer,"cat %s|sha256sum>%s",source, dest, "hash.txt");
 
     // Exécuter la commande
     system(buffer);
