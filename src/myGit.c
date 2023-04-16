@@ -156,13 +156,13 @@ int main(int argc, char *argv[]) {
         if (!branchExists(argv[2])) {
             createBranch(argv[2]);
         } else {
-            printf("The branch already exists.\n");
+            printf("La branche exisre déjà.\n");
         }
     }
 
     if (strcmp(argv[1], "branch-print") == 0) {
         if (!branchExists(argv[2])) {
-            printf("The branch does not exist.\n");
+            printf("La branche existe déjà.\n");
         } else {
             printBranch(argv[2]);
         }
@@ -170,7 +170,7 @@ int main(int argc, char *argv[]) {
 
     if (strcmp(argv[1], "checkout-branch") == 0) {
         if (!branchExists(argv[2])) {
-            printf("The branch does not exist.\n");
+            printf("La branche n'existe pas.\n");
         } else {
             myGitCheckoutBranch(argv[2]);
         }

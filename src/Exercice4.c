@@ -40,30 +40,43 @@ contenant les différents champs séparés par des tabulations
 */
 char* wfts(WorkFile* wf) {
     //printf("Rentre dans wfts\n");
+    // Calcule la longueur du nom du fichier
     int longnom = strlen(wf->name);
+    
     //printf("Rentre apres premier strlen\n");
+    // Calcule la longueur du hash du fichier s'il existe
     int longhach ;
     if (wf->hash!=NULL){
         longhach = strlen(wf->hash);
     }
+
     //printf("Rentre apres deuxieme strlen\n");
+    // Alloue de l'espace pour la chaîne de caractères qui représente le WorkFile
     char* chaine = (char*)malloc(longnom + longhach + 12);
+
+
     //printf("Rentre apres allocution chaine et avant sprintf\n");
+    // Crée la chaîne de caractères représentant le WorkFile sous le format "nom:<nom_fichier>\thash:<hash_fichier>\tmode:<mode_fichier>"
     sprintf(chaine, "nom:%s\thash:%s\tmode:%d", wf->name, wf->hash, wf->mode);
+
     //printf("Rentre apres sprintf\n");
     return chaine;
 }
 
 // Q 4.3 -permet de convertir une chaîne de caractères représentant un WorkFile en un WorkFile
 WorkFile* stwf(char* ch) {
+
+    // Alloue de l'espace mémoire pour un WorkFile
     WorkFile *wf = (WorkFile *)malloc(sizeof(WorkFile));
     if (!wf) {
         printf("Erreur allocation de memoire\n");
         return NULL;
     }
 
-    wf->name = (char *)malloc(300);
+    wf->name = (char *)malloc(300); //on alloue l'espace memoire necessaire pour le nom et le hash  
     wf->hash = (char *)malloc(300);
+
+    //Remplie le workfile à partir de la chaine de caractère 
     sscanf(ch, "nom:%s\thash:%s\tmode:%d", wf->name, wf->hash, &wf->mode);
 
     return wf;
@@ -74,12 +87,14 @@ fixée (donnée par une constante du programme) et de l'initialiser
 */
 #define N 100
 WorkTree* initWorkTree() {
+    // Alloue de l'espace mémoire pour un WorkTree
     WorkTree *wt = (WorkTree *)malloc(sizeof(WorkTree));
     if (!wt) {
         printf("Erreur: lors allocution wt initWorkTree\n");
         return NULL;
     }
 
+    // Alloue de l'espace mémoire pour le tableau de WorkFile
     wt->tab = (WorkFile *)malloc(N*sizeof(WorkFile));
     if (!(wt->tab)){
         printf("Erreur: allocution wt");
@@ -99,8 +114,8 @@ int inWorkTree(WorkTree* wt, char* nom) {
         return -1;
     }
 
-    for (int i = 0; i < wt->n; i++) {
-        if (wt->tab[i].name != NULL && strcmp(wt->tab[i].name, nom) == 0) {
+    for (int i = 0; i < wt->n; i++) { 
+        if (wt->tab[i].name != NULL && strcmp(wt->tab[i].name, nom) == 0) { //On parcourt le worktree en vérifiant qu'il ne soit pas null et si le nom du workfile courant est égale au nom passe en paramètre 
             return i;
         }
     }
@@ -134,19 +149,24 @@ int inWorkTree(WorkTree* wt, char* nom) {
 Version modifié pour eviter les segmentation fault 
 */
 int appendWorkTree(WorkTree* wt, char* name, char* hash, int mode) {
-    printf("Avant inWorkTree dans append worktree");
-    printf("wt vaut : %p",wt);
-    printf("name vaut : %s",name);
+    //printf("Avant inWorkTree dans append worktree");
+    //printf("wt vaut : %p",wt);
+    //printf("name vaut : %s",name);
+
+    // Vérifie si les pointeurs sont non null
     if (wt == NULL || name == NULL) {
-        printf("Error: wt or name pointer is null in appendWorkTree()\n");
+        printf("Erreur: wt ou name passe en parametre est null [appendWorkTree()]\n");
         return -1;
     }
-    if (inWorkTree(wt, name) == -1) {
-        printf("inWorkTree renvoie:",inWorkTree(wt, name) );
+
+    if (inWorkTree(wt, name) == -1) { // Si le fichier n'est pas déjà présent dans le WorkTree
+        //printf("inWorkTree renvoie:",inWorkTree(wt, name) );
         if (wt->n >= wt->size) {
-            printf("Le WorkTree est plein dans appendWorkTree\n");
+            // Si le nombre de fichiers dans le WorkTree atteint sa capacité maximale, affiche un message d'erreur et retourne -1
+            //printf("Le WorkTree est plein dans appendWorkTree\n");
             return -1;
         }
+        // On crée un WorkFile et on le remplit avec les données fournies
         WorkFile * wf = createWorkFile(name);
         if (wf == NULL) {
             printf("Error: couldn't create WorkFile in appendWorkTree()\n");
@@ -154,7 +174,9 @@ int appendWorkTree(WorkTree* wt, char* name, char* hash, int mode) {
         }
         wf->hash = strdup(hash);
         wf->mode = mode;
+        // Ajoute le WorkFile au WorkTree et incrémente le compteur de fichiers
         wt->tab[wt->n++] = *wf; 
+        // Retourne l'indice du nouveau fichier ajouté
         return wt->n - 1;
     }
     return -1;
@@ -164,8 +186,8 @@ int appendWorkTree(WorkTree* wt, char* name, char* hash, int mode) {
 // Q 4.7
 /* Version creant des segmentation fault car on a oublie encore une fois de verifier les acces memoires null
 char* wtts(WorkTree* wt) {
-    int bufsize = wt->n * 300;
-    char *chaine = (char *)malloc(bufsize);
+    int buffer_taille = wt->n * 300;
+    char *chaine = (char *)malloc(buffer_taille);
     if (!chaine) {
         printf("Erreur lors de l'allocation de memoire dans wtts\n");
         return NULL;
@@ -181,74 +203,90 @@ char* wtts(WorkTree* wt) {
     return chaine;
 }
 */
+
+
 /*
 Q 4.7-convertit un WorkTree en une chaîne de caractères composée des
  représentations des WorkFile séparées par un saut de ligne (caractère '\n')
 */
 char* wtts(WorkTree* wt) {
+    // Vérifie si le pointeur WorkTree est NULL 
     if (!wt) {
         printf("Erreur : pointeur NULL dans wtts\n");
         return NULL;
     }
-    int bufsize = wt->n * 300;
-    char *chaine = (char *)malloc(bufsize);
+    // Alloue de la mémoire pour la chaîne résultante
+    int buffer_taille = wt->n * 300;
+    char *chaine = (char *)malloc(buffer_taille);
     if (!chaine) {
         printf("Erreur lors de l'allocation de memoire dans wtts\n");
         return NULL;
     }
 
     chaine[0] = '\0';
+    // Parcourt les WorkFiles dans le WorkTree pour chaque workfile on applique wtfs et on concatène à la chaine resultat
     for (int i = 0; i < wt->n; i++) {
         if (!wt->tab) {
             printf("Erreur : pointeur NULL dans wtts (tab)\n");
             free(chaine);
             return NULL;
         }
+        // Convertit chaque WorkFile en une chaîne de caractères
         char *ligne = wfts(&wt->tab[i]);
         if (!ligne) {
-            printf("Erreur : pointeur NULL dans wtts (ligne)\n");
+            printf("Erreur : pointeur NULL dans wtts (ligne)\n"); //On vérifie si wfts ne renvoi pas un pointeur null pour eviter les segmentations fault
             free(chaine);
             return NULL;
         }
+        // Concatène la chaîne de caractères du WorkFile à la chaîne résultat
         strcat(chaine, ligne);
+        // Ajoute un saut de ligne à la chaîne résultat
         strcat(chaine, "\n");
+        // Libère la mémoire allouée pour la chaîne de caractères du WorkFile
         free(ligne);
     }
+    // Retourne la chaîne résultante
     return chaine;
 }
 
 
-/* Q 4.8-convertit une chaîne de caractères représentant un ´ WorkTree en un WorkTree
-
+/* Q 4.8-convertit une chaîne de caractères représentant un WorkTree en un WorkTree
 */
 WorkTree * stwt ( char * ch){
     if (ch==NULL){
-        printf("Erreur:ch est null ");
+        printf("Erreur:ch est null [stwt] ");
         return NULL;
     }
-     // On définit une variable pour suivre la position
+    // On définit une variable pour suivre la position
     size_t pos = 0; //size_t=unsigned long 
     int n_pos = 0;
+
     // Le séparateur qui sert à séparer la chaîne
     int sep = '\n' ;
+
     // Un pointeur pour trouver le séparateur
     char * ptr;
+
     // Allocation de mémoire pour le résultat
     char * res = malloc ( sizeof ( char ) *10000) ;
+
     if (res==NULL){
         printf("Erreur lors allocution\n");
         return NULL;
     }
+
     // Initialisation du WorkTree
-    printf("Avant wt = initWorkTree ()\n");
+    //printf("Avant wt = initWorkTree ()\n");
     WorkTree * wt = initWorkTree ();
 
     // Boucle pour parcourir la chaîne
     while (pos < strlen (ch)){
-        printf("rentre dans la boucle while avant ptr = strchr (ch + pos , sep )");
+        //printf("rentre dans la boucle while avant ptr = strchr (ch + pos , sep )");
+
         // Recherche du séparateur dans la chaîne
         ptr = strchr (ch + pos , sep );
-        printf("rentre dans la boucle while");
+        //printf("rentre dans la boucle while");
+
         // Si on n'a pas trouvé de séparateur alors c'est la fin de la chaîne
         if (ptr == NULL )
             n_pos = strlen (ch)+1;
@@ -276,18 +314,19 @@ WorkTree * stwt ( char * ch){
 int wttf(WorkTree* wt, char* fichier) {
     // On convertit le WorkTree en une chaîne de caractères
     char *chaine = wtts(wt);
-    // Si la chaîne n'existe pas on retourne une erreur
-
+    // Si la chaîne n'existe pas on retourne -1
     if (!chaine) {
+        printf("Erreur chaine est null [wttf]");
         return -1;
     }
 
     char path[100];
+    // On construit le chemin complet vers le fichier à écrire
     sprintf(path, "TestFiles/%s", fichier);
 
     FILE *f = fopen(path, "w");
     if (!f) {
-        printf("Erreur lors de l'ouverture du fichier\n");
+        printf("Erreur lors de l'ouverture du fichier [wttf]\n");
         free(chaine);
         return -1;
     }
